@@ -38,6 +38,48 @@ ATTRIBUTES
 * `node[:djbdns][:dnscache_uid]` - default uid for the dnscache user
 * `node[:djbdns][:dnslog_uid]` - default uid for the dnslog user
 * `node[:djbdns][:tinydns_uid]` - default uid for the tinydns user
+* `node[:djbdns][:config_bag]` - options for providing configuration via data bag
+
+DATA BAG SUPPORT
+================
+
+Configuration can be provided via data bag entries within the djbdns data bag.
+By default the cookbook will search for a configuration entry within the data
+bag based on the current node's name. For example, if the name of the current
+node is `ns1`, the cookbook will search the djbdns data bag for a
+`config_ns1` entry. If no entry is found within the data bag the cookbook
+will fall back to using defined attributes. A few options are available
+for the data bag:
+
+Custom Name
+-----------
+
+Entries are stored within the djbdns data bag. To use a name different than the
+default generated name based on the node name, it can be specified in one of two ways:
+
+* `node[:djbdns][:config_bag] = 'my_bag'`
+or
+* `node[:djbdns][:config_bag] = {:name => 'my_bag'}`
+
+The latter is used when extra options are required.
+
+Encrypted Data Bag
+------------------
+
+Encrypted data bags are supported in two ways. The data bag secret can be
+provided directly via attribute overrides, or the path to the secret
+file on the node can be provided. First, the encrypted data bag must
+be enabled:
+
+* `node[:djbdns][:config_bag] = {:encrypted => true}`
+
+and then the secret must be provided via direct assignment:
+
+* `node[:djbdns][:config_bag][:secret] = 'my secret'`
+
+or via path to secret file:
+
+* `node[:djbdns][:config_bag][:secret] = '/path/to/secret.file'`
 
 RESOURCES AND PROVIDERS
 =======================

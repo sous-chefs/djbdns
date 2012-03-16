@@ -19,26 +19,36 @@
 #
 include_recipe "djbdns"
 
-execute "#{node[:djbdns][:bin_dir]}/tinydns-conf tinydns dnslog #{node[:djbdns][:tinydns_dir]} #{node[:djbdns][:tinydns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:tinydns_dir]) }
+# Pull required configuration attributes
+c_args = bag_or_node_args(%w(
+  bin_dir
+  tinydns_dir
+  tinydns_ipaddress
+  service_type
+))
+
+Chef::Log.debug "Configuration args: #{c_args.inspect}"
+
+execute "#{c_args[:bin_dir]}/tinydns-conf tinydns dnslog #{c_args[:tinydns_dir]} #{c_args[:tinydns_ipaddress]}" do
+  not_if { ::File.directory?(c_args[:tinydns_dir]) }
 end
 
 execute "build-tinydns-data" do
-  cwd "#{node[:djbdns][:tinydns_dir]}/root"
+  cwd "#{c_args[:tinydns_dir]}/root"
   command "make"
   action :nothing
 end
 
-template "#{node[:djbdns][:tinydns_dir]}/root/data" do
+template "#{c_args[:tinydns_dir]}/root/data" do
   source "tinydns-data.erb"
   mode 0644
   notifies :run, resources("execute[build-tinydns-data]")
 end
 
-case node[:djbdns][:service_type]
+case c_args[:service_type]
 when "runit"
   link "#{node[:runit][:sv_dir]}/tinydns" do
-    to node[:djbdns][:tinydns_dir]
+    to c_args[:tinydns_dir]
   end
   runit_service "tinydns"
 when "bluepill"
@@ -51,7 +61,7 @@ when "bluepill"
   end
 when "daemontools"
   daemontools_service "tinydns" do
-    directory node[:djbdns][:tinydns_dir]
+    directory c_args[:tinydns_dir]
     template false
     action [:enable,:start]
   end

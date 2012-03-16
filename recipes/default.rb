@@ -38,7 +38,18 @@ installation_method = value_for_platform(
     "default" => { "default" => "source" }
 )
 
-include_recipe node[:djbdns][:service_type]
+# Pull required configuration attributes
+c_args = bag_or_node_args(%w(
+  service_type
+  bin_dir
+  dnslog_uid
+  tinydns_uid
+  dnscache_uid
+))
+
+Chef::Log.debug "Configuration args: #{c_args.inspect}"
+
+include_recipe c_args[:service_type]
 
 case installation_method
 when "package"
@@ -61,14 +72,14 @@ when "source"
     (cd /tmp/djbdns-1.05; perl -pi -e 's/extern int errno;/\#include <errno.h>/' error.h)
     (cd /tmp/djbdns-1.05; make setup check)
     EOH
-    not_if { ::File.exists?("#{node[:djbdns][:bin_dir]}/tinydns") }
+    not_if { ::File.exists?("#{c_args[:bin_dir]}/tinydns") }
   end
 else
   Chef::Log.info("Could not find an installation method for platform #{node[:platform]}, version #{node[:platform_version]}")
 end
 
 user "dnscache" do
-  uid node[:djbdns][:dnscache_uid]
+  uid c_args[:dnscache_uid]
   case node[:platform]
   when "ubuntu","debian"
     gid "nogroup"
@@ -84,7 +95,7 @@ user "dnscache" do
 end
 
 user "dnslog" do
-  uid node[:djbdns][:dnslog_uid]
+  uid c_args[:dnslog_uid]
   case node[:platform]
   when "ubuntu","debian"
     gid "nogroup"
@@ -100,7 +111,7 @@ user "dnslog" do
 end
 
 user "tinydns" do
-  uid node[:djbdns][:tinydns_uid]
+  uid c_args[:tinydns_uid]
   case node[:platform]
   when "ubuntu","debian"
     gid "nogroup"
