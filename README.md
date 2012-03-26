@@ -23,21 +23,21 @@ Cookbooks
 ATTRIBUTES
 ==========
 
-* `node[:djbdns][:tinydns_ipaddress]` - listen address for public facing tinydns server
-* `node[:djbdns][:tinydns_internal_ipaddress]` - listen address for internal tinydns server
-* `node[:djbdns][:public_dnscache_ipaddress]` - listen address for public DNS cache
-* `node[:djbdns][:axfrdns_ipaddress]` - listen address for axfrdns
-* `node[:djbdns][:public_dnscache_allowed_networks]` - subnets that are allowed to talk to the dnscache.
-* `node[:djbdns][:tinydns_internal_resolved_domain]` - default domain this tinydns serves
-* `node[:djbdns][:axfrdns_dir]` - default location of the axfrdns service and configuration, default `/etc/djbdns/axfrdns`
-* `node[:djbdns][:tinydns_dir]` - default location of the tinydns service and configuration, default `/etc/djbdns/tinydns`
-* `node[:djbdns][:tinydns_internal_dir]` - default location of the tinydns internal service and configuration, default `/etc/djbdns/tinydns_internal`
-* `node[:djbdns][:public_dnscache_dir]` - default location of the public dnscache service and configuration, default `/etc/djbdns/public-dnscache`
-* `node[:djbdns][:bin_dir]` - default location where binaries will be stored.
-* `node[:djbdns][:axfrdns_uid]` - default uid for the axfrdns user
-* `node[:djbdns][:dnscache_uid]` - default uid for the dnscache user
-* `node[:djbdns][:dnslog_uid]` - default uid for the dnslog user
-* `node[:djbdns][:tinydns_uid]` - default uid for the tinydns user
+* `node['djbdns']['tinydns_ipaddress']` - listen address for public facing tinydns server
+* `node['djbdns']['tinydns_internal_ipaddress']` - listen address for internal tinydns server
+* `node['djbdns']['public_dnscache_ipaddress']` - listen address for public DNS cache
+* `node['djbdns']['axfrdns_ipaddress']` - listen address for axfrdns
+* `node['djbdns']['public_dnscache_allowed_networks']` - subnets that are allowed to talk to the dnscache.
+* `node['djbdns']['tinydns_internal_resolved_domain']` - default domain this tinydns serves
+* `node['djbdns']['axfrdns_dir']` - default location of the axfrdns service and configuration, default `/etc/djbdns/axfrdns`
+* `node['djbdns']['tinydns_dir']` - default location of the tinydns service and configuration, default `/etc/djbdns/tinydns`
+* `node['djbdns']['tinydns_internal_dir']` - default location of the tinydns internal service and configuration, default `/etc/djbdns/tinydns_internal`
+* `node['djbdns']['public_dnscache_dir']` - default location of the public dnscache service and configuration, default `/etc/djbdns/public-dnscache`
+* `node['djbdns']['bin_dir']` - default location where binaries will be stored.
+* `node['djbdns']['axfrdns_uid']` - default uid for the axfrdns user
+* `node['djbdns']['dnscache_uid']` - default uid for the dnscache user
+* `node['djbdns']['dnslog_uid']` - default uid for the dnslog user
+* `node['djbdns']['tinydns_uid']` - default uid for the tinydns user
 
 RESOURCES AND PROVIDERS
 =======================
@@ -56,7 +56,7 @@ Adds a resource record for the specified FQDN.
 - fqdn: name attribute. specifies the fully qualified domain name of the record.
 - ip: ip address for the record.
 - type: specifies the type of entry. valid types are: alias, alias6, childns, host, host6, mx, and ns. default is `host`.
-- cwd: current working directory where the add scripts and data files must be located. default is the node attribute `djbdns[:tinydns_internal_dir]`, usually `/etc/djbdns/tinydns-internal`.
+- cwd: current working directory where the add scripts and data files must be located. default is the node attribute `djbdns['tinydns_internal_dir']`, usually `/etc/djbdns/tinydns-internal`.
 
 # Example
 

@@ -19,26 +19,26 @@
 #
 include_recipe "djbdns"
 
-execute "#{node[:djbdns][:bin_dir]}/tinydns-conf tinydns dnslog #{node[:djbdns][:tinydns_dir]} #{node[:djbdns][:tinydns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:tinydns_dir]) }
+execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
+  not_if { ::File.directory?(node['djbdns']['tinydns_dir']) }
 end
 
 execute "build-tinydns-data" do
-  cwd "#{node[:djbdns][:tinydns_dir]}/root"
+  cwd "#{node['djbdns']['tinydns_dir']}/root"
   command "make"
   action :nothing
 end
 
-template "#{node[:djbdns][:tinydns_dir]}/root/data" do
+template "#{node['djbdns']['tinydns_dir']}/root/data" do
   source "tinydns-data.erb"
   mode 0644
   notifies :run, resources("execute[build-tinydns-data]")
 end
 
-case node[:djbdns][:service_type]
+case node['djbdns']['service_type']
 when "runit"
-  link "#{node[:runit][:sv_dir]}/tinydns" do
-    to node[:djbdns][:tinydns_dir]
+  link "#{node['runit']['sv_dir']}/tinydns" do
+    to node['djbdns']['tinydns_dir']
   end
   runit_service "tinydns"
 when "bluepill"
@@ -51,7 +51,7 @@ when "bluepill"
   end
 when "daemontools"
   daemontools_service "tinydns" do
-    directory node[:djbdns][:tinydns_dir]
+    directory node['djbdns']['tinydns_dir']
     template false
     action [:enable,:start]
   end
