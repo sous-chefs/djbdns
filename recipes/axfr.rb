@@ -24,7 +24,7 @@ user "axfrdns" do
   case node['platform']
   when "ubuntu","debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "amazon", "redhat", "centos", "scientific"
     gid "nobody"
   else
     gid "nobody"

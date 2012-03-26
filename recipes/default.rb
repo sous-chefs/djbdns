@@ -72,7 +72,7 @@ user "dnscache" do
   case node['platform']
   when "ubuntu","debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "redhat", "centos", "amazon", "scientific"
     gid "nobody"
   else
     gid "nobody"
@@ -88,7 +88,7 @@ user "dnslog" do
   case node['platform']
   when "ubuntu","debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "redhat", "centos", "amazon", "scientific"
     gid "nobody"
   else
     gid "nobody"
@@ -104,7 +104,7 @@ user "tinydns" do
   case node['platform']
   when "ubuntu","debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "redhat", "centos", "amazon", "scientific"
     gid "nobody"
   else
     gid "nobody"
