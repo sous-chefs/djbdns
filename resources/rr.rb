@@ -26,3 +26,8 @@ attribute :fqdn,     :kind_of => String, :name_attribute => true
 attribute :ip,       :kind_of => String, :required => true
 attribute :type,     :kind_of => String, :default => "host"
 attribute :cwd,      :kind_of => String
+
+def initialize(*args)
+  super
+  @action = :add
+end
