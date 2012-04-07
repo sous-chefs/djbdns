@@ -75,9 +75,9 @@ RECIPES
 default
 -------
 
-The default recipe installs djbdns software from package where available, otherwise installs from source. It also sets up the users that will run the djbdns services using the UID's specified by the attributes above. The service type to use is selected based on platform. The recipe tries to
+The default recipe installs djbdns software from package where available, otherwise installs from source. It also sets up the users that will run the djbdns services using the UID's specified by the attributes above. The service type to use is selected based on platform.
 
-The default recipe attempts to install djbdns on as many platforms as possible. It tries to detrmine the platform's installation method:
+The default recipe attempts to install djbdns on as many platforms as possible. It tries to determine the platform's installation method:
 
 * Older versions of Debian and Ubuntu attempt installation from source. Ubuntu 8.10+ will use packages, as will Debian 5.0 (lenny) +.
 * ArchLinux will install from AUR.
@@ -105,7 +105,7 @@ cache
 
 Sets up a local DNS caching server.
 
-`internal_server`
+internal_server
 ---------------
 
 Sets up a server to be an internal nameserver. To modify resource records in the environment, modify the tinydns-internal-data.erb template, or create entries in a data bag named `djbdns`, and an item named after the domain, with underscores instead of spaces. Example structure of the data bag:
@@ -113,17 +113,18 @@ Sets up a server to be an internal nameserver. To modify resource records in the
     {
       "id": "int_example_com",
       "ns": [
-        "int.example.com": "127.0.0.1"
+        { "int.example.com": "192.168.0.5" },
+        { "0.168.192.in-addr.arpa": "192.168.0.5" }
       ],
       "alias": [
-        "first_webserver.example.com": "192.168.0.100"
+        { "www.int.example.com": "192.168.0.100" }
       ],
       "host": [
-        { "web1.example.com": "192.168.0.100" }
+        { "web1.int.example.com": "192.168.0.100" }
       ]
     }
 
-Aliases and hosts should be an array of hashes, each entry containing the fqdn as the key and the IP as the value.
+Aliases and hosts should be an array of hashes, each entry containing the fqdn as the key and the IP as the value.  In this example 192.168.0.5 is the IP of the nameserver and we're listing it as authoritative for int.example.com and for reverse DNS for 192.168.0.x.
 
 server
 ------
