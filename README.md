@@ -29,6 +29,7 @@ ATTRIBUTES
 * `node[:djbdns][:axfrdns_ipaddress]` - listen address for axfrdns
 * `node[:djbdns][:public_dnscache_allowed_networks]` - subnets that are allowed to talk to the dnscache.
 * `node[:djbdns][:tinydns_internal_resolved_domain]` - default domain this tinydns serves
+* `node[:djbdns][:tinydns_internal_resolved_reverse_domains]` - default in-addr.arpa domains this tinydns serves
 * `node[:djbdns][:axfrdns_dir]` - default location of the axfrdns service and configuration, default `/etc/djbdns/axfrdns`
 * `node[:djbdns][:tinydns_dir]` - default location of the tinydns service and configuration, default `/etc/djbdns/tinydns`
 * `node[:djbdns][:tinydns_internal_dir]` - default location of the tinydns internal service and configuration, default `/etc/djbdns/tinydns_internal`

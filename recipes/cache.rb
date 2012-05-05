@@ -64,3 +64,10 @@ template "#{node[:djbdns][:public_dnscache_dir]}/root/servers/#{node[:djbdns][:t
   source "dnscache-servers.erb"
   mode 0644
 end
+
+Array(node[:djbdns][:tinydns_internal_resolved_reverse_domains]).each do |reverse_domain|
+  template "#{node[:djbdns][:public_dnscache_dir]}/root/servers/#{reverse_domain}" do
+    source "dnscache-servers.erb"
+    mode 0644
+  end
+end

@@ -48,6 +48,20 @@ attribute "djbdns/tinydns_internal_resolved_domain",
   :description => "Internal domain TinyDNS is resolver",
   :default => "domain"
 
+attribute "djbdns/tinydns_internal_resolved_reverse_domains",
+  :display_name => "DJB DNS TinyDNS Internal Resolved Reverse Domains",
+  :description => "Internal IP (in-addr.arpa) domains TinyDNS is resolver for",
+  :default => [
+    "10.in-addr.arpa" ,"16.172.in-addr.arpa", "17.172.in-addr.arpa",
+    "18.172.in-addr.arpa", "19.172.in-addr.arpa", "20.172.in-addr.arpa",
+    "21.172.in-addr.arpa", "22.172.in-addr.arpa", "23.172.in-addr.arpa",
+    "24.172.in-addr.arpa", "25.172.in-addr.arpa", "26.172.in-addr.arpa",
+    "27.172.in-addr.arpa", "28.172.in-addr.arpa", "29.172.in-addr.arpa",
+    "30.172.in-addr.arpa", "31.172.in-addr.arpa", "168.192.in-addr.arpa",
+    "0.in-addr.arpa", "127.in-addr.arpa", "254.169.in-addr.arpa",
+    "2.0.192.in-addr.arpa", "100.51.198.in-addr.arpa", "113.0.203.in-addr.arpa",
+    "255.255.255.255.in-addr.arpa" ]
+
 attribute "djbdns/bin_dir",
   :display_name => "DJB DNS Binaries Directory",
   :description => "Location of the djbdns binaries",
