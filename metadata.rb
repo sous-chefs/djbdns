@@ -9,7 +9,7 @@ recipe            "djbdns::cache", "Sets up public dnscache service"
 recipe            "djbdns::internal_server", "Sets up internal TinyDNS"
 recipe            "djbdns::server", "Sets up external TinyDNS"
 
-%w{ build-essential runit daemontools bluepill ucspi-tcp }.each do |cb|
+%w{ build-essential runit daemontools bluepill ucspi-tcp bag_config}.each do |cb|
   depends cb
 end
 

@@ -49,6 +49,8 @@ default[:djbdns][:tinydns_dir]          = "/etc/djbdns/tinydns"
 default[:djbdns][:tinydns_internal_dir] = "/etc/djbdns/tinydns-internal"
 default[:djbdns][:public_dnscache_dir]  = "/etc/djbdns/public-dnscache"
 
+default[:djbdns][:config_bag] = nil
+
 case platform
 when "ubuntu"
   if platform_version.to_f >= 8.10

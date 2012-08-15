@@ -19,8 +19,20 @@
 #
 include_recipe "djbdns"
 
+# Pull required configuration attributes
+c_args = bag_or_node_args(%w(
+  axfrdns_uid
+  axfrdns_dir
+  axfrdns_ipaddress
+  bin_dir
+  service_type
+  tinydns_dir
+))
+
+Chef::Log.debug "Configuration args: #{c_args.inspect}"
+
 user "axfrdns" do
-  uid node[:djbdns][:axfrdns_uid]
+  uid c_args[:axfrdns_uid]
   case node[:platform]
   when "ubuntu","debian"
     gid "nogroup"
@@ -33,14 +45,14 @@ user "axfrdns" do
   home "/home/axfrdns"
 end
 
-execute "#{node[:djbdns][:bin_dir]}/axfrdns-conf axfrdns dnslog #{node[:djbdns][:axfrdns_dir]} #{node[:djbdns][:tinydns_dir]} #{node[:djbdns][:axfrdns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:axfrdns_dir]) }
+execute "#{c_args[:bin_dir]}/axfrdns-conf axfrdns dnslog #{c_args[:axfrdns_dir]} #{c_args[:tinydns_dir]} #{c_args[:axfrdns_ipaddress]}" do
+  not_if { ::File.directory?(c_args[:axfrdns_dir]) }
 end
 
-case node[:djbdns][:service_type]
+case c_args[:service_type]
 when "runit"
   link "#{node[:runit][:sv_dir]}/axfrdns" do
-    to node[:djbdns][:axfrdns_dir]
+    to c_args[:axfrdns_dir]
   end
   runit_service "axfrdns"
 when "bluepill"
@@ -53,7 +65,7 @@ when "bluepill"
   end
 when "daemontools"
   daemontools_service "axfrdns" do
-    directory node[:djbdns][:axfrdns_dir]
+    directory c_args[:axfrdns_dir]
     template false
     action [:enable,:start]
   end
