@@ -1,3 +1,8 @@
+## v0.99.4:
+
+* [COOK-1259] - Support local (10.x, 172.x, 192.168.x) reverse lookups
+  in cache
+
 ## v0.99.2:
 
 * [COOK-1042] - Corrected a syntax error in axfr.
