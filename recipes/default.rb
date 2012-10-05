@@ -35,7 +35,7 @@ installation_method = value_for_platform(
       "8.04" => "source",
       "default" => "package"
     },
-    "default" => { "default" => "source" }
+    "default" => "source"
 )
 
 include_recipe node['djbdns']['service_type']
