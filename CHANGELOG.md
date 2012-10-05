@@ -1,3 +1,10 @@
+## v1.0.0:
+
+* [COOK-1739] - use node attributes with hash notation instead of just
+  the attribute name (ipaddress, domain) in djbdns attributes file
+* [COOK-1742] - fix foodcritic warnings, use platform_family where
+  apropriate
+
 ## v0.99.4:
 
 * [COOK-1259] - Support local (10.x, 172.x, 192.168.x) reverse lookups
