@@ -1,0 +1,8 @@
+cookbook "djbdns" do
+  configuration "default"
+  configuration "axfr"
+  configuration "cache"
+  configuration "internal_server"
+  configuration "server"
+  run_list_extras ["djbdns_test::setup"]
+end
