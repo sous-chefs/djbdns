@@ -17,14 +17,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "djbdns"
 
 user "axfrdns" do
-  uid node[:djbdns][:axfrdns_uid]
-  case node[:platform]
-  when "ubuntu","debian"
+  uid node['djbdns']['axfrdns_uid']
+  case node['platform_family']
+  when "debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "rhel", "fedora"
     gid "nobody"
   else
     gid "nobody"
@@ -33,28 +34,36 @@ user "axfrdns" do
   home "/home/axfrdns"
 end
 
-execute "#{node[:djbdns][:bin_dir]}/axfrdns-conf axfrdns dnslog #{node[:djbdns][:axfrdns_dir]} #{node[:djbdns][:tinydns_dir]} #{node[:djbdns][:axfrdns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:axfrdns_dir]) }
+execute "#{node['djbdns']['bin_dir']}/axfrdns-conf axfrdns dnslog #{node['djbdns']['axfrdns_dir']} #{node['djbdns']['tinydns_dir']} #{node['djbdns']['axfrdns_ipaddress']}" do
+  not_if { ::File.directory?(node['djbdns']['axfrdns_dir']) }
 end
 
-case node[:djbdns][:service_type]
+case node['djbdns']['service_type']
 when "runit"
-  link "#{node[:runit][:sv_dir]}/axfrdns" do
-    to node[:djbdns][:axfrdns_dir]
+
+  link "#{node['runit']['sv_dir']}/axfrdns" do
+    to node['djbdns']['axfrdns_dir']
   end
+
   runit_service "axfrdns"
+
 when "bluepill"
+
   template "#{node['bluepill']['conf_dir']}/axfrdns.pill" do
     source "axfrdns.pill.erb"
     mode 0644
   end
+
   bluepill_service "axfrdns" do
-    action [:enable,:load,:start]
+    action [:enable, :load, :start]
   end
+
 when "daemontools"
+
   daemontools_service "axfrdns" do
-    directory node[:djbdns][:axfrdns_dir]
+    directory node['djbdns']['axfrdns_dir']
     template false
-    action [:enable,:start]
+    action [:enable, :start]
   end
+
 end

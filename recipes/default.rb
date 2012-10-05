@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-node.set[:djbdns][:service_type] = value_for_platform(
-  ["debian","ubuntu"] => { "default" => "runit" },
+node.set['djbdns']['service_type'] = value_for_platform(
+  ["debian", "ubuntu"] => { "default" => "runit" },
   "arch" => { "default" => "daemontools" },
   "default" => "bluepill"
 )
@@ -38,20 +38,26 @@ installation_method = value_for_platform(
     "default" => { "default" => "source" }
 )
 
-include_recipe node[:djbdns][:service_type]
+include_recipe node['djbdns']['service_type']
 
 case installation_method
 when "package"
+
   package "djbdns" do
     action :install
   end
+
 when "aur"
+
   pacman_aur "djbdns" do
-    action [:build,:install]
+    action [:build, :install]
   end
+
 when "source"
+
   include_recipe "build-essential"
   include_recipe "ucspi-tcp"
+
   bash "install_djbdns" do
     user "root"
     cwd "/tmp"
@@ -61,18 +67,21 @@ when "source"
     (cd /tmp/djbdns-1.05; perl -pi -e 's/extern int errno;/\#include <errno.h>/' error.h)
     (cd /tmp/djbdns-1.05; make setup check)
     EOH
-    not_if { ::File.exists?("#{node[:djbdns][:bin_dir]}/tinydns") }
+    not_if { ::File.exists?("#{node['djbdns']['bin_dir']}/tinydns") }
   end
+
 else
-  Chef::Log.info("Could not find an installation method for platform #{node[:platform]}, version #{node[:platform_version]}")
+
+  Chef::Log.info("Could not find an installation method for platform #{node['platform']}, version #{node['platform_version']}")
+
 end
 
 user "dnscache" do
-  uid node[:djbdns][:dnscache_uid]
-  case node[:platform]
-  when "ubuntu","debian"
+  uid node['djbdns']['dnscache_uid']
+  case node['platform_family']
+  when "debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "rhel", "fedora"
     gid "nobody"
   else
     gid "nobody"
@@ -84,11 +93,11 @@ user "dnscache" do
 end
 
 user "dnslog" do
-  uid node[:djbdns][:dnslog_uid]
-  case node[:platform]
-  when "ubuntu","debian"
+  uid node['djbdns']['dnslog_uid']
+  case node['platform_family']
+  when "debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "rhel", "fedora"
     gid "nobody"
   else
     gid "nobody"
@@ -100,11 +109,11 @@ user "dnslog" do
 end
 
 user "tinydns" do
-  uid node[:djbdns][:tinydns_uid]
-  case node[:platform]
-  when "ubuntu","debian"
+  uid node['djbdns']['tinydns_uid']
+  case node['platform_family']
+  when "debian"
     gid "nogroup"
-  when "redhat", "centos"
+  when "rhel", "fedora"
     gid "nobody"
   else
     gid "nobody"

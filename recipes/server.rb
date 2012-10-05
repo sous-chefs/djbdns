@@ -17,42 +17,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "djbdns"
 
-execute "#{node[:djbdns][:bin_dir]}/tinydns-conf tinydns dnslog #{node[:djbdns][:tinydns_dir]} #{node[:djbdns][:tinydns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:tinydns_dir]) }
+execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
+  not_if { ::File.directory?(node['djbdns']['tinydns_dir']) }
 end
 
 execute "build-tinydns-data" do
-  cwd "#{node[:djbdns][:tinydns_dir]}/root"
+  cwd "#{node['djbdns']['tinydns_dir']}/root"
   command "make"
   action :nothing
 end
 
-template "#{node[:djbdns][:tinydns_dir]}/root/data" do
+template "#{node['djbdns']['tinydns_dir']}/root/data" do
   source "tinydns-data.erb"
-  mode 0644
-  notifies :run, resources("execute[build-tinydns-data]")
+  mode 00644
+  notifies :run, "execute[build-tinydns-data]"
 end
 
-case node[:djbdns][:service_type]
+case node['djbdns']['service_type']
 when "runit"
-  link "#{node[:runit][:sv_dir]}/tinydns" do
-    to node[:djbdns][:tinydns_dir]
+
+  link "#{node['runit']['sv_dir']}/tinydns" do
+    to node['djbdns']['tinydns_dir']
   end
+
   runit_service "tinydns"
+
 when "bluepill"
+
   template "#{node['bluepill']['conf_dir']}/tinydns.pill" do
     source "tinydns.pill.erb"
-    mode 0644
+    mode 00644
   end
+
   bluepill_service "tinydns" do
-    action [:enable,:load,:start]
+    action [:enable, :load, :start]
   end
+
 when "daemontools"
+
   daemontools_service "tinydns" do
-    directory node[:djbdns][:tinydns_dir]
+    directory node['djbdns']['tinydns_dir']
     template false
-    action [:enable,:start]
+    action [:enable, :start]
   end
+
 end

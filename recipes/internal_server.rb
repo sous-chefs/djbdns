@@ -17,22 +17,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "djbdns"
 
-execute "#{node[:djbdns][:bin_dir]}/tinydns-conf tinydns dnslog #{node[:djbdns][:tinydns_internal_dir]} #{node[:djbdns][:tinydns_ipaddress]}" do
-  not_if { ::File.directory?(node[:djbdns][:tinydns_internal_dir]) }
+execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_internal_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
+  not_if { ::File.directory?(node['djbdns']['tinydns_internal_dir']) }
 end
 
 execute "build-tinydns-internal-data" do
-  cwd "#{node[:djbdns][:tinydns_internal_dir]}/root"
+  cwd "#{node['djbdns']['tinydns_internal_dir']}/root"
   command "make"
   action :nothing
 end
 
 begin
-  dns = data_bag_item("djbdns", node[:djbdns][:domain].gsub(/\./, "_"))
 
-  file "#{node[:djbdns][:tinydns_internal_dir]}/root/data" do
+  dns = data_bag_item("djbdns", node['djbdns']['domain'].gsub(/\./, "_"))
+
+  file "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
     action :create
   end
 
@@ -41,7 +43,7 @@ begin
       record.each do |fqdn,ip|
 
         djbdns_rr fqdn do
-          cwd "#{node[:djbdns][:tinydns_internal_dir]}/root"
+          cwd "#{node['djbdns']['tinydns_internal_dir']}/root"
           ip ip
           type type
           action :add
@@ -51,32 +53,43 @@ begin
       end
     end
   end
+
 rescue
-  template "#{node[:djbdns][:tinydns_internal_dir]}/root/data" do
+
+  template "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
     source "tinydns-internal-data.erb"
     mode 0644
-    notifies :run, resources("execute[build-tinydns-internal-data]")
+    notifies :run, "execute[build-tinydns-internal-data]"
   end
+
 end
 
-case node[:djbdns][:service_type]
+case node['djbdns']['service_type']
 when "runit"
-  link "#{node[:runit][:sv_dir]}/tinydns-internal" do
-    to node[:djbdns][:tinydns_internal_dir]
+
+  link "#{node['runit']['sv_dir']}/tinydns-internal" do
+    to node['djbdns']['tinydns_internal_dir']
   end
+
   runit_service "tinydns-internal"
+
 when "bluepill"
+
   template "#{node['bluepill']['conf_dir']}/tinydns-internal.pill" do
     source "tinydns-internal.pill.erb"
     mode 0644
   end
+
   bluepill_service "tinydns-internal" do
-    action [:enable,:load,:start]
+    action [:enable, :load, :start]
   end
+
 when "daemontools"
+
   daemontools_service "tinydns-internal" do
-    directory node[:djbdns][:tinydns_internal_dir]
+    directory node['djbdns']['tinydns_internal_dir']
     template false
-    action [:enable,:start]
+    action [:enable, :start]
   end
+
 end

@@ -21,6 +21,7 @@
 # e.g., tinydns-edit data data.new add host tester2.int.housepub.org 10.13.37.79
 
 actions :add
+default_action :add
 
 attribute :fqdn,     :kind_of => String, :name_attribute => true
 attribute :ip,       :kind_of => String, :required => true
