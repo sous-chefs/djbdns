@@ -1,3 +1,7 @@
+## v1.0.2:
+
+* [COOK-2262] - pin runit dependency
+
 ## v1.0.0:
 
 * [COOK-1739] - use node attributes with hash notation instead of just
