@@ -1,6 +1,6 @@
 name              "djbdns"
-maintainer        "Opscode, Inc."
-maintainer_email  "cookbooks@opscode.com"
+maintainer        "Joshua Timberman"
+maintainer_email  "cookbooks@housepub.org"
 license           "Apache 2.0"
 description       "Installs djbdns and configures DNS services"
 version           "1.0.2"
