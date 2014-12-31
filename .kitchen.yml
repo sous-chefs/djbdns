@@ -1,0 +1,27 @@
+---
+driver:
+  name: vagrant
+  customize:
+    memory: 512
+
+provisioner:
+  name: chef_zero
+  data_path: test/shared
+
+platforms:
+  - name: ubuntu-14.04
+  - name: ubuntu-12.04
+  - name: ubuntu-10.04
+  - name: debian-7.6
+  - name: centos-6.5
+  - name: centos-5.10
+
+suites:
+  - name: tinydns
+    run_list:
+      - recipe[djbdns::server]
+      - recipe[djbdns::cache]
+      - recipe[test]
+    attributes:
+      djbdns:
+        service_type: runit
