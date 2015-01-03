@@ -1,3 +1,13 @@
+## v1.1.0:
+
+* Update dependency for current runit cookbook, #7
+* Debian is a source based platform, #9 (see issue for background)
+* Add `package_name` attribute to allow for installing [dbndns](http://en.wikipedia.org/wiki/Dbndns), #16, related to #9
+* Use runit as default service type instead of bluepill, #10
+* Drop explicit support for old unsupported Ubuntu versions, #11
+* Manage runit's sv dir for "reasons," #12
+* Remove attributes from metadata, as they're not used for anything anywhere anyway
+
 ## v1.0.2:
 
 * [COOK-2262] - pin runit dependency
