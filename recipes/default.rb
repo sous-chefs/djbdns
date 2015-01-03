@@ -50,10 +50,6 @@ when "source"
     not_if { ::File.exist?("#{node['djbdns']['bin_dir']}/tinydns") }
   end
 
-else
-
-  Chef::Log.info("Could not find an installation method for platform #{node['platform']}, version #{node['platform_version']}")
-
 end
 
 user 'dnscache' do
