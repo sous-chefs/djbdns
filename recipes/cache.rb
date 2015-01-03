@@ -35,6 +35,10 @@ end
 case node['djbdns']['service_type']
 when "runit"
 
+  directory node['runit']['sv_dir'] do
+    recursive true
+  end
+
   link "#{node['runit']['sv_dir']}/public-dnscache" do
     to node['djbdns']['public_dnscache_dir']
   end

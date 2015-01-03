@@ -49,21 +49,22 @@ default['djbdns']['tinydns_dir']          = "/etc/djbdns/tinydns"
 default['djbdns']['tinydns_internal_dir'] = "/etc/djbdns/tinydns-internal"
 default['djbdns']['public_dnscache_dir']  = "/etc/djbdns/public-dnscache"
 
-case node['platform']
-when "ubuntu"
-  if node['platform_version'].to_f >= 8.10
-    set['djbdns']['bin_dir'] = "/usr/bin"
-  else
-    set['djbdns']['bin_dir'] = "/usr/local/bin"
-  end
-when "debian"
-  if node['platform_version'].to_f >= 5.0
-    set['djbdns']['bin_dir'] = "/usr/bin"
-  else
-    set['djbdns']['bin_dir'] = "/usr/local/bin"
-  end
-when "arch"
-  set['djbdns']['bin_dir'] = "/usr/bin"
+default['djbdns']['install_method'] = case node['platform']
+                                      when 'ubuntu' then 'package'
+                                      when 'arch'   then 'aur'
+                                      else
+                                        'source'
+                                      end
+
+if node['djbdns']['install_method'] == 'package'
+  default['djbdns']['bin_dir'] = '/usr/bin'
 else
-  set['djbdns']['bin_dir'] = "/usr/local/bin"
+  default['djbdns']['bin_dir'] = '/usr/local/bin'
 end
+
+default['djbdns']['service_type'] = case node['platform_family']
+                                    when 'debian' then 'runit'
+                                    when 'arch'   then 'daemontools'
+                                    else
+                                      'bluepill'
+                                    end
