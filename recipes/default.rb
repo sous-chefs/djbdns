@@ -18,29 +18,9 @@
 # limitations under the License.
 #
 
-node.set['djbdns']['service_type'] = value_for_platform(
-  ["debian", "ubuntu"] => { "default" => "runit" },
-  "arch" => { "default" => "daemontools" },
-  "default" => "bluepill"
-)
-
-installation_method = value_for_platform(
-    "arch" => { "default" => "aur" },
-    "debian" => { "4.0" => "source", "default" => "package" },
-    "ubuntu" => {
-      "6.06" => "source",
-      "6.10" => "source",
-      "7.04" => "source",
-      "7.10" => "source",
-      "8.04" => "source",
-      "default" => "package"
-    },
-    "default" => "source"
-)
-
 include_recipe node['djbdns']['service_type']
 
-case installation_method
+case node['djbdns']['install_method']
 when "package"
 
   package "djbdns" do
@@ -67,7 +47,7 @@ when "source"
     (cd /tmp/djbdns-1.05; perl -pi -e 's/extern int errno;/\#include <errno.h>/' error.h)
     (cd /tmp/djbdns-1.05; make setup check)
     EOH
-    not_if { ::File.exists?("#{node['djbdns']['bin_dir']}/tinydns") }
+    not_if { ::File.exist?("#{node['djbdns']['bin_dir']}/tinydns") }
   end
 
 else

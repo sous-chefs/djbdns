@@ -41,6 +41,10 @@ end
 case node['djbdns']['service_type']
 when "runit"
 
+  directory node['runit']['sv_dir'] do
+    recursive true
+  end
+
   link "#{node['runit']['sv_dir']}/axfrdns" do
     to node['djbdns']['axfrdns_dir']
   end

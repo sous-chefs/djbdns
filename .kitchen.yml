@@ -19,8 +19,6 @@ platforms:
 suites:
   - name: tinydns
     run_list:
-      - recipe[djbdns::server]
-      - recipe[djbdns::cache]
       - recipe[test]
     attributes:
       djbdns:
