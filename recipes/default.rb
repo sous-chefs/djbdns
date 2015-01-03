@@ -56,52 +56,40 @@ else
 
 end
 
-user "dnscache" do
+user 'dnscache' do
   uid node['djbdns']['dnscache_uid']
-  case node['platform_family']
-  when "debian"
-    gid "nogroup"
-  when "rhel", "fedora"
-    gid "nobody"
-  else
-    gid "nobody"
+  gid case node['platform_family']
+      when 'debian' then 'nogroup'
+      else 'nobody'
   end
-  shell "/bin/false"
-  home "/home/dnscache"
+  shell '/bin/false'
+  home '/home/dnscache'
   system true
   supports :manage_home => true
 end
 
-user "dnslog" do
+user 'dnslog' do
   uid node['djbdns']['dnslog_uid']
-  case node['platform_family']
-  when "debian"
-    gid "nogroup"
-  when "rhel", "fedora"
-    gid "nobody"
-  else
-    gid "nobody"
+  gid case node['platform_family']
+      when 'debian' then 'nogroup'
+      else 'nobody'
   end
-  shell "/bin/false"
-  home "/home/dnslog"
+  shell '/bin/false'
+  home '/home/dnslog'
   system true
   supports :manage_home => true
 end
 
-user "tinydns" do
+user 'tinydns' do
   uid node['djbdns']['tinydns_uid']
-  case node['platform_family']
-  when "debian"
-    gid "nogroup"
-  when "rhel", "fedora"
-    gid "nobody"
-  else
-    gid "nobody"
+  gid case node['platform_family']
+      when 'debian' then 'nogroup'
+      else 'nobody'
   end
-  shell "/bin/false"
-  home "/home/tinydns"
+  shell '/bin/false'
+  home '/home/tinydns'
   system true
   supports :manage_home => true
 end
 
-directory "/etc/djbdns"
+directory '/etc/djbdns'
