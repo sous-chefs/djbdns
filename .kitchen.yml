@@ -23,3 +23,16 @@ suites:
     attributes:
       djbdns:
         service_type: runit
+
+  - name: dbndns
+    run_list:
+      - recipe[test]
+    excludes:
+      - ubuntu-12.04
+      - ubuntu-10.04
+      - debian-7.6
+      - centos-6.5
+      - centos-5.10
+    attributes:
+      djbdns:
+        package_name: dbndns

@@ -21,9 +21,9 @@
 include_recipe node['djbdns']['service_type']
 
 case node['djbdns']['install_method']
-when "package"
+when 'package'
 
-  package "djbdns" do
+  package node['djbdns']['package_name'] do
     action :install
   end
 
