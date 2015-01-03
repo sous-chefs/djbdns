@@ -20,18 +20,14 @@
 
 include_recipe "djbdns"
 
-user "axfrdns" do
+user 'axfrdns' do
   uid node['djbdns']['axfrdns_uid']
-  case node['platform_family']
-  when "debian"
-    gid "nogroup"
-  when "rhel", "fedora"
-    gid "nobody"
-  else
-    gid "nobody"
-  end
-  shell "/bin/false"
-  home "/home/axfrdns"
+  gid case node['platform_family']
+      when 'debian' then 'nogroup'
+      else 'nobody'
+      end
+  shell '/bin/false'
+  home '/home/axfrdns'
 end
 
 execute "#{node['djbdns']['bin_dir']}/axfrdns-conf axfrdns dnslog #{node['djbdns']['axfrdns_dir']} #{node['djbdns']['tinydns_dir']} #{node['djbdns']['axfrdns_ipaddress']}" do
