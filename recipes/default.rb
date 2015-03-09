@@ -36,7 +36,6 @@ when "aur"
 when "source"
 
   include_recipe "build-essential"
-  include_recipe "ucspi-tcp"
 
   bash "install_djbdns" do
     user "root"
