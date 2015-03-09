@@ -23,6 +23,13 @@ suites:
     attributes:
       djbdns:
         service_type: runit
+  - name: source
+    run_list:
+      - recipe[test]
+    attributes:
+      djbdns:
+        service_type: runit
+        install_method: source
 
   - name: dbndns
     run_list:

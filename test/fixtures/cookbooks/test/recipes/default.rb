@@ -9,4 +9,4 @@ file '/etc/resolv.conf' do
 end
 
 # for the `host` command used in the tests
-package 'bind-utils' if platform_family?('rhel')
+package 'bind-utils' if platform_family?('rhel', 'fedora')
