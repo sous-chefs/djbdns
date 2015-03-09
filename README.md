@@ -137,7 +137,7 @@ Sets up a server to be a public nameserver. To modify resource records in the en
 # License and Author
 
 - Author:: Joshua Timberman <joshua@chef.io>
-- Copyright 2009-2012, Opscode, Inc.
+- Copyright 2009-2012, Chef Software, Inc.
 - Copyright 2014-2015, Chef Software, Inc. <legal@chef.io>
 
 Licensed under the Apache License, Version 2.0 (the "License");
