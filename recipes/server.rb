@@ -3,7 +3,7 @@
 # Cookbook Name:: djbdns
 # Recipe:: server
 #
-# Copyright 2009, Chef Software, Inc
+# Copyright 2009-2015, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,26 +18,26 @@
 # limitations under the License.
 #
 
-include_recipe "djbdns"
+include_recipe 'djbdns'
 
 execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
   not_if { ::File.directory?(node['djbdns']['tinydns_dir']) }
 end
 
-execute "build-tinydns-data" do
+execute 'build-tinydns-data' do
   cwd "#{node['djbdns']['tinydns_dir']}/root"
-  command "make"
+  command 'make'
   action :nothing
 end
 
 template "#{node['djbdns']['tinydns_dir']}/root/data" do
-  source "tinydns-data.erb"
-  mode 00644
-  notifies :run, "execute[build-tinydns-data]"
+  source 'tinydns-data.erb'
+  mode '0644'
+  notifies :run, 'execute[build-tinydns-data]'
 end
 
 case node['djbdns']['service_type']
-when "runit"
+when 'runit'
 
   directory node['runit']['sv_dir'] do
     recursive true
@@ -47,22 +47,22 @@ when "runit"
     to node['djbdns']['tinydns_dir']
   end
 
-  runit_service "tinydns"
+  runit_service 'tinydns'
 
-when "bluepill"
+when 'bluepill'
 
   template "#{node['bluepill']['conf_dir']}/tinydns.pill" do
-    source "tinydns.pill.erb"
-    mode 00644
+    source 'tinydns.pill.erb'
+    mode '0644'
   end
 
-  bluepill_service "tinydns" do
+  bluepill_service 'tinydns' do
     action [:enable, :load, :start]
   end
 
-when "daemontools"
+when 'daemontools'
 
-  daemontools_service "tinydns" do
+  daemontools_service 'tinydns' do
     directory node['djbdns']['tinydns_dir']
     template false
     action [:enable, :start]

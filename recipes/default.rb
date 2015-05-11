@@ -3,7 +3,7 @@
 # Recipe:: default
 # Author:: Joshua Timberman (<joshua@chef.io>)
 #
-# Copyright 2009, Chef Software, Inc
+# Copyright 2009-2015, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,19 +27,19 @@ when 'package'
     action :install
   end
 
-when "aur"
+when 'aur'
 
-  pacman_aur "djbdns" do
+  pacman_aur 'djbdns' do
     action [:build, :install]
   end
 
-when "source"
+when 'source'
 
-  include_recipe "build-essential"
+  include_recipe 'build-essential'
 
-  bash "install_djbdns" do
-    user "root"
-    cwd "/tmp"
+  bash 'install_djbdns' do
+    user 'root'
+    cwd '/tmp'
     code <<-EOH
     (cd /tmp; wget http://cr.yp.to/djbdns/djbdns-1.05.tar.gz)
     (cd /tmp; tar xzvf djbdns-1.05.tar.gz)

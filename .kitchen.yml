@@ -12,9 +12,9 @@ platforms:
   - name: ubuntu-14.04
   - name: ubuntu-12.04
   - name: ubuntu-10.04
-  - name: debian-7.6
-  - name: centos-6.5
-  - name: centos-5.10
+  - name: debian-7.8
+  - name: centos-6.6
+  - name: centos-5.11
 
 suites:
   - name: tinydns
@@ -37,9 +37,9 @@ suites:
     excludes:
       - ubuntu-12.04
       - ubuntu-10.04
-      - debian-7.6
-      - centos-6.5
-      - centos-5.10
+      - debian-7.8
+      - centos-6.6
+      - centos-5.11
     attributes:
       djbdns:
         package_name: dbndns

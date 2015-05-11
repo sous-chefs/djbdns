@@ -14,8 +14,8 @@ recipe            'djbdns::server', 'Sets up external TinyDNS'
   depends cb
 end
 
-depends 'runit', '~> 1.5.0'
+depends 'runit', '~> 1.6'
 
-%w{ ubuntu debian centos rhel arch }.each do |os|
+%w{ ubuntu debian redhat centos scientific amazon oracle arch }.each do |os|
   supports os
 end

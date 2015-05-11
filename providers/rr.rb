@@ -2,7 +2,7 @@
 # Cookbook Name:: djbdns
 # Provider:: rr
 #
-# Copyright 2011, Joshua Timberman <joshua@housepub.org>
+# Copyright 2011-2015, Joshua Timberman <joshua@housepub.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
