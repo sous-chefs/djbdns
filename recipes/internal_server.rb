@@ -58,8 +58,8 @@ rescue
 
   template "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
     source "tinydns-internal-data.erb"
-    mode 0644
     notifies :run, "execute[build-tinydns-internal-data]"
+    mode '0644'
   end
 
 end
@@ -81,7 +81,7 @@ when "bluepill"
 
   template "#{node['bluepill']['conf_dir']}/tinydns-internal.pill" do
     source "tinydns-internal.pill.erb"
-    mode 0644
+    mode '0644'
   end
 
   bluepill_service "tinydns-internal" do

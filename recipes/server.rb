@@ -32,8 +32,8 @@ end
 
 template "#{node['djbdns']['tinydns_dir']}/root/data" do
   source "tinydns-data.erb"
-  mode 00644
   notifies :run, "execute[build-tinydns-data]"
+  mode '0644'
 end
 
 case node['djbdns']['service_type']
@@ -53,7 +53,7 @@ when "bluepill"
 
   template "#{node['bluepill']['conf_dir']}/tinydns.pill" do
     source "tinydns.pill.erb"
-    mode 00644
+    mode '0644'
   end
 
   bluepill_service "tinydns" do

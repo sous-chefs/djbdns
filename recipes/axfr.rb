@@ -51,7 +51,7 @@ when "bluepill"
 
   template "#{node['bluepill']['conf_dir']}/axfrdns.pill" do
     source "axfrdns.pill.erb"
-    mode 0644
+    mode '0644'
   end
 
   bluepill_service "axfrdns" do

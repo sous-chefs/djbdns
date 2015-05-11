@@ -49,7 +49,7 @@ when "bluepill"
 
   template "#{node['bluepill']['conf_dir']}/public-dnscache.pill" do
     source "public-dnscache.pill.erb"
-    mode 0644
+    mode '0644'
   end
 
   bluepill_service "public-dnscache" do
@@ -70,21 +70,21 @@ end
 node['djbdns']['public_dnscache_allowed_networks'].each do |net|
 
   file "#{node['djbdns']['public_dnscache_dir']}/root/ip/#{net}" do
-    mode 0644
+    mode '0644'
   end
 
 end
 
 template "#{node['djbdns']['public_dnscache_dir']}/root/servers/#{node['djbdns']['tinydns_internal_resolved_domain']}" do
   source "dnscache-servers.erb"
-  mode 0644
+  mode '0644'
 end
 
 Array(node['djbdns']['tinydns_internal_resolved_reverse_domains']).each do |reverse_domain|
 
   template "#{node['djbdns']['public_dnscache_dir']}/root/servers/#{reverse_domain}" do
     source "dnscache-servers.erb"
-    mode 0644
+    mode '0644'
   end
 
 end
