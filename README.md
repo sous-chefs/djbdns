@@ -9,8 +9,8 @@ Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are co
 The following platforms are supported via test kitchen.
 
 * Ubuntu 10.04, 12.04, 14.04
-* Debian 7.6
-* CentOS 6.5, 5.10
+* Debian 7.8
+* CentOS 6.6, 5.11
 
 It may work with or without modification on other platforms,
 particularly using the `source` install method. It has been tested in
