@@ -1,11 +1,11 @@
 AllCops:
-  Includes:
+  Include:
     - Berksfile
     - Gemfile
     - Rakefile
     - Thorfile
     - Guardfile
-  Excludes:
+  Exclude:
     - vendor/**
 
 ClassLength:
@@ -22,16 +22,14 @@ MethodLength:
   Enabled: false
 SignalException:
   Enabled: false
-TrailingComma:
-  Enabled: false
 WordArray:
   Enabled: false
 
 Style/SingleSpaceBeforeFirstArg:
   Exclude:
-    - Rakefile
-    - metadata.rb
+    - '**/Rakefile'
+    - '**/metadata.rb'
 
 Style/PercentLiteralDelimiters:
   Exclude:
-    - metadata.rb
+    - '**/metadata.rb'
