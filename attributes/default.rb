@@ -45,6 +45,7 @@ default['djbdns']['tinydns_internal_resolved_reverse_domains'] = [
 
 default['djbdns']['public_dnscache_cachesize'] = '1000000'
 default['djbdns']['public_dnscache_datalimit'] = '3000000'
+default['djbdns']['public_dnscache_ipsend'] = '0.0.0.0'
 
 default['djbdns']['axfrdns_dir']          = '/etc/djbdns/axfrdns'
 default['djbdns']['tinydns_dir']          = '/etc/djbdns/tinydns'
