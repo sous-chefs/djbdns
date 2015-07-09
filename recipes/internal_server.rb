@@ -73,7 +73,10 @@ when 'runit'
     to node['djbdns']['tinydns_internal_dir']
   end
 
-  runit_service 'tinydns-internal'
+  runit_service 'tinydns-internal' do
+    env('ROOT' => "#{node['djbdns']['tinydns_internal_dir']}/root",
+        'IP' => node['djbdns']['tinydns_ipaddress'])
+  end
 
 when 'daemontools'
 
