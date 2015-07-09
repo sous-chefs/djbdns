@@ -16,6 +16,6 @@ end
 
 depends 'runit', '~> 1.6.0'
 
-%w{ ubuntu debian redhat centos scientific amazon oracle arch }.each do |os|
+%w( ubuntu debian redhat centos scientific amazon oracle arch ).each do |os|
   supports os
 end
