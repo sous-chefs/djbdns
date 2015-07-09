@@ -75,17 +75,6 @@ when 'runit'
 
   runit_service 'tinydns-internal'
 
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/tinydns-internal.pill" do
-    source 'tinydns-internal.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'tinydns-internal' do
-    action [:enable, :load, :start]
-  end
-
 when 'daemontools'
 
   daemontools_service 'tinydns-internal' do

@@ -45,18 +45,6 @@ when 'runit'
 
   runit_service 'public-dnscache'
 
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/public-dnscache.pill" do
-    source 'public-dnscache.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'public-dnscache' do
-    action [:enable, :load, :start]
-    subscribes :restart, "template[#{node['bluepill']['conf_dir']}/public-dnscache.pill]"
-  end
-
 when 'daemontools'
 
   daemontools_service 'public-dnscache' do

@@ -62,9 +62,4 @@ else
   default['djbdns']['bin_dir'] = '/usr/local/bin'
 end
 
-default['djbdns']['service_type'] = case node['platform_family']
-                                    when 'debian' then 'runit'
-                                    when 'arch'   then 'daemontools'
-                                    else
-                                      'bluepill'
-                                    end
+default['djbdns']['service_type'] = node['platform_family'] == 'arch' ? 'daemontools' : 'runit'
