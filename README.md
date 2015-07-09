@@ -1,6 +1,6 @@
 # Description
 
-Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are configured to start up under runit, daemontools or bluepill.
+Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are configured to start up under runit or daemontools.
 
 # Requirements
 
@@ -24,7 +24,6 @@ doesn't publish baseboxes.
 * ucspi-tcp - `tcpserver` is used by the axfr recipe.
 * runit - for setting up the services.
 * daemontools - alternative service configuration.
-* bluepill - alternative service configuration. **May be removed in a future major version of this cookbook**.
 
 # Attributes
 
@@ -45,7 +44,7 @@ doesn't publish baseboxes.
 * `node['djbdns']['dnslog_uid']` - default uid for the dnslog user
 * `node['djbdns']['tinydns_uid']` - default uid for the tinydns user
 * `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
-* `node['djbdns']['service_type']` - the process supervision system to use for managing djbdns services. supported types are `runit` (strongly recommended), `daemontools`, or `bluepill`. Support for bluepill may be removed in a future version.
+* `node['djbdns']['service_type']` - the process supervision system to use for managing djbdns services. supported types are `runit` (strongly recommended) or `daemontools`.
 * `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, `aur`, or `source`.
 
 # Resources and Providers
@@ -92,9 +91,8 @@ The default recipe attempts to install djbdns on as many platforms as possible. 
 
 The service type is selected by platform as well:
 
-* Debian and Ubuntu will use runit.
 * ArchLinux will use daemontools.
-* All other platforms will use bluepill.
+* All other platforms will use runit.
 
 Service specific users will be created as system users:
 
