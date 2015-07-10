@@ -43,6 +43,10 @@ default['djbdns']['tinydns_internal_resolved_reverse_domains'] = [
   '2.0.192.in-addr.arpa', '100.51.198.in-addr.arpa', '113.0.203.in-addr.arpa',
   '255.255.255.255.in-addr.arpa']
 
+default['djbdns']['public_dnscache_cachesize'] = '1000000'
+default['djbdns']['public_dnscache_datalimit'] = '3000000'
+default['djbdns']['public_dnscache_ipsend'] = '0.0.0.0'
+
 default['djbdns']['axfrdns_dir']          = '/etc/djbdns/axfrdns'
 default['djbdns']['tinydns_dir']          = '/etc/djbdns/tinydns'
 default['djbdns']['tinydns_internal_dir'] = '/etc/djbdns/tinydns-internal'
@@ -62,9 +66,4 @@ else
   default['djbdns']['bin_dir'] = '/usr/local/bin'
 end
 
-default['djbdns']['service_type'] = case node['platform_family']
-                                    when 'debian' then 'runit'
-                                    when 'arch'   then 'daemontools'
-                                    else
-                                      'bluepill'
-                                    end
+default['djbdns']['service_type'] = node['platform_family'] == 'arch' ? 'daemontools' : 'runit'
