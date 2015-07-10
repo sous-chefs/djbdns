@@ -47,17 +47,6 @@ when 'runit'
 
   runit_service 'axfrdns'
 
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/axfrdns.pill" do
-    source 'axfrdns.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'axfrdns' do
-    action [:enable, :load, :start]
-  end
-
 when 'daemontools'
 
   daemontools_service 'axfrdns' do

@@ -43,18 +43,12 @@ when 'runit'
     to node['djbdns']['public_dnscache_dir']
   end
 
-  runit_service 'public-dnscache'
-
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/public-dnscache.pill" do
-    source 'public-dnscache.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'public-dnscache' do
-    action [:enable, :load, :start]
-    subscribes :restart, "template[#{node['bluepill']['conf_dir']}/public-dnscache.pill]"
+  runit_service 'public-dnscache' do
+    env('ROOT' => "#{node['djbdns']['public_dnscache_dir']}/root",
+        'IP' => node['djbdns']['public_dnscache_ipaddress'],
+        'CACHESIZE' => node['djbdns']['public_dnscache_cachesize'],
+        'DATALIMIT' => node['djbdns']['public_dnscache_datalimit'],
+        'IPSEND' => node['djbdns']['public_dnscache_ipsend'])
   end
 
 when 'daemontools'

@@ -10,12 +10,12 @@ recipe            'djbdns::cache', 'Sets up public dnscache service'
 recipe            'djbdns::internal_server', 'Sets up internal TinyDNS'
 recipe            'djbdns::server', 'Sets up external TinyDNS'
 
-%w{ build-essential daemontools bluepill ucspi-tcp }.each do |cb|
+%w( build-essential daemontools ucspi-tcp ).each do |cb|
   depends cb
 end
 
 depends 'runit', '~> 1.6.0'
 
-%w{ ubuntu debian redhat centos scientific amazon oracle arch }.each do |os|
+%w( ubuntu debian redhat centos scientific amazon oracle arch ).each do |os|
   supports os
 end
