@@ -11,9 +11,10 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
   - name: ubuntu-12.04
-  - name: ubuntu-10.04
+  - name: debian-8.1
   - name: debian-7.8
-  - name: centos-6.6
+  - name: centos-7.1
+  - name: centos-6.7
   - name: centos-5.11
 
 suites:
@@ -36,9 +37,10 @@ suites:
       - recipe[test]
     excludes:
       - ubuntu-12.04
-      - ubuntu-10.04
+      - debian-8.1
       - debian-7.8
-      - centos-6.6
+      - centos-7.1
+      - centos-6.7
       - centos-5.11
     attributes:
       djbdns:
