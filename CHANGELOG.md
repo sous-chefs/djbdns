@@ -2,6 +2,23 @@ djbdns Cookbook CHANGELOG
 =========================
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## v1.2.0:
+* Removed newlines in configs to prevent restarts
+* Removed inclusion of ucspi-tcp recipe for source installs
+* Convert hashes to Ruby 1.9+ format
+* Bump Runit dependency to 1.6.0 from 1.5.0
+* Updated Test Kitchen config with the latest platforms and a suite for source install
+* Added Travis CI config
+* Added a simple contributing doc to replace the Chef Software Inc version
+* Updated the development gem requirements and break gems into groups in the gemfile
+* Added a cookbook version badge in the readme
+* Added a chefignore file to limit what files are uploaded to the chef server
+* Added additional platforms to the metadata
+* Add source_url and issues_url to the metadata
+* Make modes strings to preserve the leading 0s
+* Resolve rubocop warnings
+* Added additional unit tests
+
 ## v1.1.0:
 
 * Update dependency for current runit cookbook, #7
