@@ -19,3 +19,6 @@ depends 'runit', '~> 1.6.0'
 %w{ ubuntu debian redhat centos scientific amazon oracle arch }.each do |os|
   supports os
 end
+
+source_url 'https://github.com/jtimberman/djbdns' if respond_to?(:source_url)
+issues_url 'https://github.com/jtimberman/djbdns/issues' if respond_to?(:issues_url)
