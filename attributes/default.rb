@@ -62,10 +62,3 @@ default['djbdns']['bin_dir'] = if node['djbdns']['install_method'] == 'package'
                                else
                                  '/usr/local/bin'
                                end
-
-default['djbdns']['service_type'] = case node['platform_family']
-                                    when 'debian' then 'runit'
-                                    when 'arch'   then 'daemontools'
-                                    else
-                                      'bluepill'
-                                    end

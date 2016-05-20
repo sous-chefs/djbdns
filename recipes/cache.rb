@@ -32,40 +32,15 @@ execute "#{node['djbdns']['bin_dir']}/dnscache-conf dnscache dnslog #{node['djbd
   notifies :run, 'execute[public_cache_update]'
 end
 
-case node['djbdns']['service_type']
-when 'runit'
-
-  directory node['runit']['sv_dir'] do
-    recursive true
-  end
-
-  link "#{node['runit']['sv_dir']}/public-dnscache" do
-    to node['djbdns']['public_dnscache_dir']
-  end
-
-  runit_service 'public-dnscache'
-
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/public-dnscache.pill" do
-    source 'public-dnscache.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'public-dnscache' do
-    action [:enable, :load, :start]
-    subscribes :restart, "template[#{node['bluepill']['conf_dir']}/public-dnscache.pill]"
-  end
-
-when 'daemontools'
-
-  daemontools_service 'public-dnscache' do
-    directory node['djbdns']['public_dnscache_dir']
-    template false
-    action [:enable, :start]
-  end
-
+directory node['runit']['sv_dir'] do
+  recursive true
 end
+
+link "#{node['runit']['sv_dir']}/public-dnscache" do
+  to node['djbdns']['public_dnscache_dir']
+end
+
+runit_service 'public-dnscache'
 
 node['djbdns']['public_dnscache_allowed_networks'].each do |net|
   file "#{node['djbdns']['public_dnscache_dir']}/root/ip/#{net}" do

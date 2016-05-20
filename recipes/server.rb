@@ -36,36 +36,12 @@ template "#{node['djbdns']['tinydns_dir']}/root/data" do
   notifies :run, 'execute[build-tinydns-data]'
 end
 
-case node['djbdns']['service_type']
-when 'runit'
-
-  directory node['runit']['sv_dir'] do
-    recursive true
-  end
-
-  link "#{node['runit']['sv_dir']}/tinydns" do
-    to node['djbdns']['tinydns_dir']
-  end
-
-  runit_service 'tinydns'
-
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/tinydns.pill" do
-    source 'tinydns.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'tinydns' do
-    action [:enable, :load, :start]
-  end
-
-when 'daemontools'
-
-  daemontools_service 'tinydns' do
-    directory node['djbdns']['tinydns_dir']
-    template false
-    action [:enable, :start]
-  end
-
+directory node['runit']['sv_dir'] do
+  recursive true
 end
+
+link "#{node['runit']['sv_dir']}/tinydns" do
+  to node['djbdns']['tinydns_dir']
+end
+
+runit_service 'tinydns'

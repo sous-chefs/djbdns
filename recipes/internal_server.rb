@@ -62,36 +62,12 @@ rescue
 
 end
 
-case node['djbdns']['service_type']
-when 'runit'
-
-  directory node['runit']['sv_dir'] do
-    recursive true
-  end
-
-  link "#{node['runit']['sv_dir']}/tinydns-internal" do
-    to node['djbdns']['tinydns_internal_dir']
-  end
-
-  runit_service 'tinydns-internal'
-
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/tinydns-internal.pill" do
-    source 'tinydns-internal.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'tinydns-internal' do
-    action [:enable, :load, :start]
-  end
-
-when 'daemontools'
-
-  daemontools_service 'tinydns-internal' do
-    directory node['djbdns']['tinydns_internal_dir']
-    template false
-    action [:enable, :start]
-  end
-
+directory node['runit']['sv_dir'] do
+  recursive true
 end
+
+link "#{node['runit']['sv_dir']}/tinydns-internal" do
+  to node['djbdns']['tinydns_internal_dir']
+end
+
+runit_service 'tinydns-internal'

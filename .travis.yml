@@ -1,12 +1,36 @@
-sudo: false
-cache: bundler
-language: ruby
-bundler_args: --without kitchen_common kitchen_vagrant
-rvm:
-  - 2.0
-  - 2.1
-  - 2.2
+sudo: required
+dist: trusty
+
+# install the pre-release chef-dk.  Use chef-stable-precise to install the stable release
+addons:
+  apt:
+    sources:
+      - chef-current-precise
+    packages:
+      - chefdk
+
+install: echo "skip bundle install"
+
+services: docker
+
+env:
+  matrix:
+  - INSTANCE=tinydns-ubuntu-1204
+  - INSTANCE=dbndns-ubuntu-1204
+  - INSTANCE=source-ubuntu-1204
+
+  fast_finish: true
+
+before_script:
+  - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
+  - eval "$(/opt/chefdk/bin/chef shell-init bash)"
+  - /opt/chefdk/embedded/bin/chef gem install kitchen-dokken
+
 script:
-  - bundle exec foodcritic -f any --tags ~FC003 --tags ~FC015 --tags ~FC023 .
-  - bundle exec rubocop
-  - bundle exec rspec --color --format progress
+  - /opt/chefdk/embedded/bin/chef --version
+  - /opt/chefdk/embedded/bin/rubocop --version
+  - /opt/chefdk/embedded/bin/rubocop
+  - /opt/chefdk/embedded/bin/foodcritic --version
+  - /opt/chefdk/embedded/bin/foodcritic . --exclude spec -f any
+  - /opt/chefdk/embedded/bin/rspec
+  - KITCHEN_LOCAL_YAML=.kitchen.docker.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}

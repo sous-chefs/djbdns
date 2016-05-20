@@ -34,36 +34,12 @@ execute "#{node['djbdns']['bin_dir']}/axfrdns-conf axfrdns dnslog #{node['djbdns
   not_if { ::File.directory?(node['djbdns']['axfrdns_dir']) }
 end
 
-case node['djbdns']['service_type']
-when 'runit'
-
-  directory node['runit']['sv_dir'] do
-    recursive true
-  end
-
-  link "#{node['runit']['sv_dir']}/axfrdns" do
-    to node['djbdns']['axfrdns_dir']
-  end
-
-  runit_service 'axfrdns'
-
-when 'bluepill'
-
-  template "#{node['bluepill']['conf_dir']}/axfrdns.pill" do
-    source 'axfrdns.pill.erb'
-    mode '0644'
-  end
-
-  bluepill_service 'axfrdns' do
-    action [:enable, :load, :start]
-  end
-
-when 'daemontools'
-
-  daemontools_service 'axfrdns' do
-    directory node['djbdns']['axfrdns_dir']
-    template false
-    action [:enable, :start]
-  end
-
+directory node['runit']['sv_dir'] do
+  recursive true
 end
+
+link "#{node['runit']['sv_dir']}/axfrdns" do
+  to node['djbdns']['axfrdns_dir']
+end
+
+runit_service 'axfrdns'
