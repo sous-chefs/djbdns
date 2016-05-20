@@ -36,7 +36,12 @@ link "#{node['runit']['sv_dir']}/public-dnscache" do
   to node['djbdns']['public_dnscache_dir']
 end
 
-runit_service 'public-dnscache'
+runit_service 'public-dnscache' do
+  env('ROOT' => "#{node['djbdns']['public_dnscache_dir']}/root",
+      'IP' => node['djbdns']['public_dnscache_ipaddress'],
+      'CACHESIZE' => node['djbdns']['public_dnscache_cachesize'],
+      'DATALIMIT' => node['djbdns']['public_dnscache_datalimit'])
+end
 
 node['djbdns']['public_dnscache_allowed_networks'].each do |net|
   file "#{node['djbdns']['public_dnscache_dir']}/root/ip/#{net}" do
