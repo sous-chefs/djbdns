@@ -41,7 +41,8 @@ default['djbdns']['tinydns_internal_resolved_reverse_domains'] = [
   '30.172.in-addr.arpa', '31.172.in-addr.arpa', '168.192.in-addr.arpa',
   '0.in-addr.arpa', '127.in-addr.arpa', '254.169.in-addr.arpa',
   '2.0.192.in-addr.arpa', '100.51.198.in-addr.arpa', '113.0.203.in-addr.arpa',
-  '255.255.255.255.in-addr.arpa']
+  '255.255.255.255.in-addr.arpa'
+]
 
 default['djbdns']['axfrdns_dir']          = '/etc/djbdns/axfrdns'
 default['djbdns']['tinydns_dir']          = '/etc/djbdns/tinydns'
@@ -56,11 +57,11 @@ default['djbdns']['install_method'] = case node['platform']
 
 default['djbdns']['package_name'] = 'djbdns'
 
-if node['djbdns']['install_method'] == 'package'
-  default['djbdns']['bin_dir'] = '/usr/bin'
-else
-  default['djbdns']['bin_dir'] = '/usr/local/bin'
-end
+default['djbdns']['bin_dir'] = if node['djbdns']['install_method'] == 'package'
+                                 '/usr/bin'
+                               else
+                                 '/usr/local/bin'
+                               end
 
 default['djbdns']['service_type'] = case node['platform_family']
                                     when 'debian' then 'runit'

@@ -32,7 +32,7 @@ end
 
 begin
 
-  dns = data_bag_item('djbdns', node['djbdns']['domain'].gsub(/\./, '_'))
+  dns = data_bag_item('djbdns', node['djbdns']['domain'].tr('.', '_'))
 
   file "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
     action :create

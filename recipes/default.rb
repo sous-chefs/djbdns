@@ -56,7 +56,7 @@ user 'dnscache' do
   gid case node['platform_family']
       when 'debian' then 'nogroup'
       else 'nobody'
-  end
+      end
   shell '/bin/false'
   home '/home/dnscache'
   system true
@@ -68,7 +68,7 @@ user 'dnslog' do
   gid case node['platform_family']
       when 'debian' then 'nogroup'
       else 'nobody'
-  end
+      end
   shell '/bin/false'
   home '/home/dnslog'
   system true
@@ -80,7 +80,7 @@ user 'tinydns' do
   gid case node['platform_family']
       when 'debian' then 'nogroup'
       else 'nobody'
-  end
+      end
   shell '/bin/false'
   home '/home/tinydns'
   system true
