@@ -36,10 +36,6 @@ template "#{node['djbdns']['tinydns_dir']}/root/data" do
   notifies :run, 'execute[build-tinydns-data]'
 end
 
-directory node['runit']['sv_dir'] do
-  recursive true
-end
-
 link "#{node['runit']['sv_dir']}/tinydns" do
   to node['djbdns']['tinydns_dir']
 end

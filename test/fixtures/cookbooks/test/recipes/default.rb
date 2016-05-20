@@ -1,5 +1,3 @@
-execute 'apt-get update' if platform_family?('debian')
-
 include_recipe 'djbdns::server'
 include_recipe 'djbdns::cache'
 
