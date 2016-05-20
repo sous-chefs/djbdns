@@ -18,14 +18,11 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns'
+include_recipe 'djbdns::default'
 
 user 'axfrdns' do
   uid node['djbdns']['axfrdns_uid']
-  gid case node['platform_family']
-      when 'debian' then 'nogroup'
-      else 'nobody'
-      end
+  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/axfrdns'
 end

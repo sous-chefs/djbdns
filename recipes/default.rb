@@ -3,7 +3,7 @@
 # Recipe:: default
 # Author:: Joshua Timberman (<joshua@chef.io>)
 #
-# Copyright 2009-2015, Chef Software, Inc
+# Copyright 2009-2016, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,12 +27,6 @@ when 'package'
     action :install
   end
 
-when 'aur'
-
-  pacman_aur 'djbdns' do
-    action [:build, :install]
-  end
-
 when 'source'
 
   include_recipe 'build-essential'
@@ -53,10 +47,7 @@ end
 
 user 'dnscache' do
   uid node['djbdns']['dnscache_uid']
-  gid case node['platform_family']
-      when 'debian' then 'nogroup'
-      else 'nobody'
-      end
+  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/dnscache'
   system true
@@ -65,10 +56,7 @@ end
 
 user 'dnslog' do
   uid node['djbdns']['dnslog_uid']
-  gid case node['platform_family']
-      when 'debian' then 'nogroup'
-      else 'nobody'
-      end
+  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/dnslog'
   system true
@@ -77,10 +65,7 @@ end
 
 user 'tinydns' do
   uid node['djbdns']['tinydns_uid']
-  gid case node['platform_family']
-      when 'debian' then 'nogroup'
-      else 'nobody'
-      end
+  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/tinydns'
   system true

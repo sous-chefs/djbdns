@@ -6,15 +6,19 @@ Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are co
 
 # Requirements
 
-## Platform
+## Platforms
 
 The following platforms are supported via test kitchen.
 
-- Ubuntu 12.04, 14.04
-- Debian 7.8
-- CentOS 6.6, 5.11
+- Ubuntu 12.04 / 14.04
+- Debian 7
+- RHEL 5/6
 
-It may work with or without modification on other platforms, particularly using the `source` install method. It has been tested in the past on ArchLinux, but due to the rolling release nature of Arch, it is not sustainable to maintain test kitchen support, and CHEF doesn't publish baseboxes.
+It may work with or without modification on other platforms, particularly using the `source` install method.
+
+## Chef
+
+- Chef 11+
 
 ## Cookbooks
 
@@ -41,7 +45,7 @@ It may work with or without modification on other platforms, particularly using 
 - `node['djbdns']['dnslog_uid']` - default uid for the dnslog user
 - `node['djbdns']['tinydns_uid']` - default uid for the tinydns user
 - `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
-- `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, `aur`, or `source`.
+- `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
 
 # Resources and Providers
 
@@ -82,7 +86,6 @@ The default recipe installs djbdns software from package where available, otherw
 The default recipe attempts to install djbdns on as many platforms as possible. It tries to determine the platform's installation method:
 
 - Debian will install from packages
-- ArchLinux will install from AUR.
 - All other distributions will install from source.
 
 Service specific users will be created as system users:

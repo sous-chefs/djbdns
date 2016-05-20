@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns'
+include_recipe 'djbdns::default'
 
 execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_internal_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
   not_if { ::File.directory?(node['djbdns']['tinydns_internal_dir']) }

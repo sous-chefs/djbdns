@@ -51,7 +51,6 @@ default['djbdns']['public_dnscache_dir']  = '/etc/djbdns/public-dnscache'
 
 default['djbdns']['install_method'] = case node['platform']
                                       when 'ubuntu' then 'package'
-                                      when 'arch'   then 'aur'
                                       else 'source'
                                       end
 

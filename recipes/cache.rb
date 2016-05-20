@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns'
+include_recipe 'djbdns::default'
 
 execute 'public_cache_update' do
   cwd node['djbdns']['public_dnscache_dir']
