@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe node['djbdns']['service_type']
+include_recipe 'runit'
 
 case node['djbdns']['install_method']
 when 'package'

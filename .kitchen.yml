@@ -34,19 +34,13 @@ suites:
       - recipe[test]
     attributes:
       djbdns:
-        service_type: runit
         install_method: source
 
   - name: dbndns
     run_list:
       - recipe[test]
-    excludes:
-      - ubuntu-12.04
-      - debian-8.1
-      - debian-7.8
-      - centos-7.1
-      - centos-6.7
-      - centos-5.11
+    includes:
+      - ubuntu-14.04
     attributes:
       djbdns:
         package_name: dbndns
