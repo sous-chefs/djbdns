@@ -1,6 +1,6 @@
 # djbdns Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/djbdns.svg)](https://supermarket.chef.io/cookbooks/djbdns)
+[![Build Status](https://travis-ci.org/chef-cookbooks/djbdns.svg?branch=master)](https://travis-ci.org/chef-cookbooks/djbdns) [![Cookbook Version](https://img.shields.io/cookbook/v/djbdns.svg)](https://supermarket.chef.io/cookbooks/djbdns)
 
 Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are configured to start up under runit.
 
