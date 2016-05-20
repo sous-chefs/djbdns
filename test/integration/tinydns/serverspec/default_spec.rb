@@ -16,7 +16,7 @@ describe 'tinydns' do
   end
 
   describe file('/etc/service/tinydns/root/data') do
-    its(:content) { should match(/.vagrantup.com:127.0.0.1:a:259200/) }
+    its(:content) { should match(/.test.local:127.0.0.1:a:259200/) }
   end
 
   describe file('/etc/service/tinydns/root/data.cdb') do

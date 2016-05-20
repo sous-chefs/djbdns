@@ -27,12 +27,14 @@ suites:
     run_list:
       - recipe[test]
     attributes:
+      domain: test.local
       djbdns:
         service_type: runit
   - name: source
     run_list:
       - recipe[test]
     attributes:
+      domain: test.local
       djbdns:
         install_method: source
 
@@ -42,5 +44,6 @@ suites:
     includes:
       - ubuntu-14.04
     attributes:
+      domain: test.local
       djbdns:
         package_name: dbndns
