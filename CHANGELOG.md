@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## v2.0.0 (2016-05-20)
+
+### BREAKING CHANGE:
+
+This version removes support for bluepill and daemontools init systems and Arch Linux. If you rely on that support you'll want to pin to the 1.2.0 release
+
+This version now manages all djbdns env files to be compatible with the newest runit release. If you manage these files outside of the djbdns recipe you'll need to use the new attributes
+
 ## v1.2.0:
 
 - Removed newlines in configs to prevent restarts

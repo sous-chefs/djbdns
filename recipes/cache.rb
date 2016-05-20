@@ -40,7 +40,8 @@ runit_service 'public-dnscache' do
   env('ROOT' => "#{node['djbdns']['public_dnscache_dir']}/root",
       'IP' => node['djbdns']['public_dnscache_ipaddress'],
       'CACHESIZE' => node['djbdns']['public_dnscache_cachesize'],
-      'DATALIMIT' => node['djbdns']['public_dnscache_datalimit'])
+      'DATALIMIT' => node['djbdns']['public_dnscache_datalimit']
+     )
 end
 
 node['djbdns']['public_dnscache_allowed_networks'].each do |net|
