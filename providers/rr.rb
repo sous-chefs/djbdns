@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+use_inline_resources
+
 action :add do
   type = new_resource.type
   fqdn = new_resource.fqdn
