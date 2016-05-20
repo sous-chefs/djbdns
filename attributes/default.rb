@@ -30,7 +30,7 @@ default['djbdns']['dnslog_uid']   = 9998
 default['djbdns']['tinydns_uid']  = 9999
 
 default['djbdns']['public_dnscache_allowed_networks'] = [node['ipaddress'].split('.')[0, 2].join('.')]
-default['djbdns']['tinydns_internal_resolved_domain'] = node['domain']
+default['djbdns']['tinydns_internal_resolved_domain'] = node['domain'] || 'domain.local'
 # see Locally Served DNS Zones: http://tools.ietf.org/html/rfc6303
 default['djbdns']['tinydns_internal_resolved_reverse_domains'] = [
   '10.in-addr.arpa', '16.172.in-addr.arpa', '17.172.in-addr.arpa',
