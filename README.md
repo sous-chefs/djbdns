@@ -18,7 +18,7 @@ It may work with or without modification on other platforms, particularly using 
 
 ## Chef
 
-- Chef 11+
+- Chef 12.1+
 
 ## Cookbooks
 

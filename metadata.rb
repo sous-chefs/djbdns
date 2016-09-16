@@ -21,5 +21,7 @@ depends 'runit', '>= 1.6.0'
   supports os
 end
 
-source_url 'https://github.com/chef-cookbooks/djbdns' if respond_to?(:source_url)
-issues_url 'https://github.com/chef-cookbooks/djbdns/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/chef-cookbooks/djbdns'
+issues_url 'https://github.com/chef-cookbooks/djbdns/issues'
+
+chef_version '>= 12.1'
