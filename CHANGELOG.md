@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 3.0.0 (2016-09-15)
+- Testing updates and remove FQDN from templates
+- Update maintainers wording and format [skip-ci]
+- Testing updates
+- Require Chef 12.1+
+
 ## v2.0.0 (2016-05-20)
 
 ### BREAKING CHANGE:
