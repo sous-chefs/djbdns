@@ -16,6 +16,7 @@ recipe            'djbdns::server', 'Sets up external TinyDNS'
 end
 
 depends 'runit', '>= 1.6.0'
+depends 'compat_resource' '>= 12.14.6'
 
 %w( ubuntu debian redhat centos scientific amazon oracle ).each do |os|
   supports os
@@ -23,5 +24,4 @@ end
 
 source_url 'https://github.com/chef-cookbooks/djbdns'
 issues_url 'https://github.com/chef-cookbooks/djbdns/issues'
-
 chef_version '>= 12.1'

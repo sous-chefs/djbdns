@@ -20,10 +20,21 @@
 # calls tinydns-edit: usage: tinydns-edit data data.new add [ns|childns|host|alias|mx] domain a.b.c.d
 # e.g., tinydns-edit data data.new add host tester2.int.housepub.org 10.13.37.79
 
-actions :add
-default_action :add
+property :fqdn, String, name_attribute: true
+property :ip, String, required: true
+property :type, String, default: 'host'
+property :cwd, String
 
-attribute :fqdn,     kind_of: String, name_attribute: true
-attribute :ip,       kind_of: String, required: true
-attribute :type,     kind_of: String, default: 'host'
-attribute :cwd,      kind_of: String
+action :add do
+  type = new_resource.type
+  fqdn = new_resource.fqdn
+  ip = new_resource.ip
+  cwd = new_resource.cwd ? new_resource.cwd : "#{node['djbdns']['tinydns_internal_dir']}/root"
+
+  unless IO.readlines("#{cwd}/data").grep(/^[\.\+=]#{fqdn}:#{ip}/).length >= 1
+    execute "./add-#{type} #{fqdn} #{ip}" do
+      cwd cwd
+      ignore_failure true
+    end
+  end
+end
