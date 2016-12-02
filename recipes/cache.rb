@@ -1,10 +1,10 @@
 #
 # Author:: Joshua Timberman (<joshua@chef.io>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
-# Cookbook Name:: djbdns
+# Cookbook:: djbdns
 # Recipe:: cache
 #
-# Copyright 2009-2015, Chef Software, Inc
+# Copyright:: 2009-2016, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
