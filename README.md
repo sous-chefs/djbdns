@@ -47,7 +47,7 @@ It may work with or without modification on other platforms, particularly using 
 - `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
 - `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
 
-# Resources and Providers
+# Resources
 
 ## djbdns_rr
 
@@ -131,12 +131,19 @@ Sets up a server to be a public nameserver. To modify resource records in the en
 # License and Author
 
 - Author:: Joshua Timberman [joshua@chef.io](mailto:joshua@chef.io)
-- Copyright 2009-2015, Chef Software, Inc ([cookbooks@chef.io](mailto:cookbooks@chef.io))
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+```text
+Copyright 2009-2016, Chef Software, Inc.
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
-http://www.apache.org/licenses/LICENSE-2.0
-```
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

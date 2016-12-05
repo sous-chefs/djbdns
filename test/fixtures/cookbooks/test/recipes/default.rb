@@ -1,3 +1,5 @@
+apt_update 'update' if platform_family?('ubuntu')
+
 include_recipe 'djbdns::server'
 include_recipe 'djbdns::cache'
 

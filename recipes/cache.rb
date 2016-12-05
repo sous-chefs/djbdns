@@ -1,10 +1,10 @@
 #
 # Author:: Joshua Timberman (<joshua@chef.io>)
 # Author:: Joshua Sierles (<joshua@37signals.com>)
-# Cookbook Name:: djbdns
+# Cookbook:: djbdns
 # Recipe:: cache
 #
-# Copyright 2009-2015, Chef Software, Inc
+# Copyright:: 2009-2016, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ end
 
 runit_service 'public-dnscache' do
   env('ROOT' => "#{node['djbdns']['public_dnscache_dir']}/root",
+      'IPSEND' => node['djbdns']['public_dnscache_ipaddress'],
       'IP' => node['djbdns']['public_dnscache_ipaddress'],
       'CACHESIZE' => node['djbdns']['public_dnscache_cachesize'],
       'DATALIMIT' => node['djbdns']['public_dnscache_datalimit']

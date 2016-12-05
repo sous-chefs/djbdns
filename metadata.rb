@@ -4,7 +4,7 @@ maintainer_email  'cookbooks@chef.io'
 license           'Apache 2.0'
 description       'Installs djbdns and configures DNS services'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '3.0.0'
+version           '3.0.0'
 recipe            'djbdns', 'Installs djbdns from package or source and creates users'
 recipe            'djbdns::axfr', 'Sets up djbdns AXFR service'
 recipe            'djbdns::cache', 'Sets up public dnscache service'
@@ -16,6 +16,7 @@ recipe            'djbdns::server', 'Sets up external TinyDNS'
 end
 
 depends 'runit', '>= 1.6.0'
+depends 'compat_resource', '>= 12.14.7'
 
 %w( ubuntu debian redhat centos scientific amazon oracle ).each do |os|
   supports os
@@ -23,5 +24,4 @@ end
 
 source_url 'https://github.com/chef-cookbooks/djbdns'
 issues_url 'https://github.com/chef-cookbooks/djbdns/issues'
-
 chef_version '>= 12.1'
