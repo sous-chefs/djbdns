@@ -41,7 +41,7 @@ when 'source'
     code <<-EOH
     (cd /tmp; wget http://cr.yp.to/djbdns/djbdns-1.05.tar.gz)
     (cd /tmp; tar xzvf djbdns-1.05.tar.gz)
-    (cd /tmp/djbdns-1.05; perl -pi -e 's/extern int errno;/\#include <errno.h>/' error.h)
+    (cd /tmp/djbdns-1.05; echo gcc -O2 -include /usr/include/errno.h > conf-cc)
     (cd /tmp/djbdns-1.05; make setup check)
     EOH
     not_if { ::File.exist?("#{node['djbdns']['bin_dir']}/tinydns") }
