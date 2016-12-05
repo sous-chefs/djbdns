@@ -55,7 +55,7 @@ user 'dnscache' do
   shell '/bin/false'
   home '/home/dnscache'
   system true
-  supports manage_home: true
+  manage_home true
 end
 
 user 'dnslog' do
@@ -64,7 +64,7 @@ user 'dnslog' do
   shell '/bin/false'
   home '/home/dnslog'
   system true
-  supports manage_home: true
+  manage_home true
 end
 
 user 'tinydns' do
@@ -73,7 +73,7 @@ user 'tinydns' do
   shell '/bin/false'
   home '/home/tinydns'
   system true
-  supports manage_home: true
+  manage_home true
 end
 
 directory '/etc/djbdns'
