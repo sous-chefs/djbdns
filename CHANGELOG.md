@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 4.0.0 (2016-12-05)
+- Prevent compile error with source updating method
+- Add ChefSpec matchers
+- Convert LWRP to a custom resource and use compat_resource for 12.1+ compatibility
+- Make sure IPSEND is set so the cache starts
+- Fix Chef 13 compatibility by updating manage_home
+
 ## 3.0.0 (2016-09-15)
 - Testing updates and remove FQDN from templates
 - Update maintainers wording and format [skip-ci]
