@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 4.1.0 (2017-01-17)
+
+- Require the latest compat_resource
+- Switch to Inspec for integration testing
+- Remove RHEL 5 testing as it's near EOL
+
 ## 4.0.0 (2016-12-05)
 - Prevent compile error with source updating method
 - Add ChefSpec matchers
