@@ -12,7 +12,7 @@ The following platforms are supported via test kitchen.
 
 - Ubuntu 12.04 / 14.04
 - Debian 7
-- RHEL 5/6
+- RHEL
 
 It may work with or without modification on other platforms, particularly using the `source` install method.
 

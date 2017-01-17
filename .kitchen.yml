@@ -5,8 +5,10 @@ provisioner:
   name: chef_zero
   data_path: test/shared
 
+verifier:
+  name: inspec
+
 platforms:
-  - name: centos-5.11
   - name: centos-6.8
   - name: centos-7.2
   - name: debian-7.11

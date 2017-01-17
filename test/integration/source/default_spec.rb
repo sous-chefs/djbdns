@@ -1,8 +1,6 @@
-require_relative '../../../kitchen/data/spec_helper'
-
-describe 'public-dnscache' do
+control 'public-dnscache' do
   describe port(53) do
-    it { should be_listening.with('udp') }
+    its('protocols') { should include 'udp' }
   end
 
   describe command('host chef.io') do
@@ -10,9 +8,10 @@ describe 'public-dnscache' do
   end
 end
 
-describe 'tinydns' do
+control 'tinydns' do
   describe port(53) do
-    it { should be_listening.on('127.0.0.1').with('udp') }
+    its('addresses') { should include '127.0.0.1' }
+    its('protocols') { should include 'udp' }
   end
 
   describe file('/etc/service/tinydns/root/data') do
