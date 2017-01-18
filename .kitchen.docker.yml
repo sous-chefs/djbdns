@@ -88,7 +88,7 @@ platforms:
     image: opensuse:leap
     pid_one_command: /bin/systemd
     intermediate_instructions:
-      - RUN zypper --non-interactive install openssl aaa_base perl-Getopt-Long-Descriptive which hostname
+      - RUN zypper --non-interactive install openssl aaa_base perl-Getopt-Long-Descriptive which hostname net-tools
 
 suites:
   - name: tinydns
