@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 5.0.0 (2017-02-14)
+
+- Require 12.5 and remove compat_resource dependency
+
 ## 4.1.0 (2017-01-17)
 
 - Require the latest compat_resource
