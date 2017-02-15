@@ -20,9 +20,6 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=tinydns-ubuntu-1204
-  - INSTANCE=dbndns-ubuntu-1204
-  - INSTANCE=source-ubuntu-1204
   - INSTANCE=tinydns-ubuntu-1404
   - INSTANCE=dbndns-ubuntu-1404
   - INSTANCE=source-ubuntu-1404
