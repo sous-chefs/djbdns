@@ -3,7 +3,7 @@ driver:
 
 provisioner:
   name: chef_zero
-  data_path: test/shared
+  deprecations_as_errors: true
 
 verifier:
   name: inspec

@@ -8,6 +8,7 @@ transport:
 
 provisioner:
   name: dokken
+  deprecations_as_errors: true
 
 verifier:
   name: inspec
@@ -67,13 +68,6 @@ platforms:
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get install openssl apt-transport-https lsb-release procps net-tools -y
-
-- name: opensuse-leap
-  driver:
-    image: opensuse:leap
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN zypper --non-interactive install openssl aaa_base perl-Getopt-Long-Descriptive which hostname net-tools
 
 suites:
   - name: tinydns
