@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 5.0.1 (2017-04-26)
+
+- Test with Local Delivery and not Rake
+- Move templates out of the default directory since only Chef < 12 requires this
+
 ## 5.0.0 (2017-02-14)
 
 - Require 12.5 and remove compat_resource dependency
