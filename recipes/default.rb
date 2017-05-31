@@ -35,6 +35,8 @@ when 'source'
 
   include_recipe 'build-essential'
 
+  package 'wget'
+
   bash 'install_djbdns' do
     user 'root'
     cwd '/tmp'
