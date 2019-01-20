@@ -29,7 +29,7 @@ action :add do
   type = new_resource.type
   fqdn = new_resource.fqdn
   ip = new_resource.ip
-  cwd = new_resource.cwd ? new_resource.cwd : "#{node['djbdns']['tinydns_internal_dir']}/root"
+  cwd = new_resource.cwd || "#{node['djbdns']['tinydns_internal_dir']}/root"
 
   unless IO.readlines("#{cwd}/data").grep(/^[\.\+=]#{fqdn}:#{ip}/).length >= 1
     execute "./add-#{type} #{fqdn} #{ip}" do
