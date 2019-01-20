@@ -51,9 +51,7 @@ begin
       end
     end
   end
-
 rescue
-
   template "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
     source 'tinydns-internal-data.erb'
     mode '0644'
