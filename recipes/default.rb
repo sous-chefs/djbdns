@@ -20,10 +20,6 @@
 
 include_recipe 'runit'
 
-directory node['runit']['sv_dir'] do
-  recursive true
-end
-
 case node['djbdns']['install_method']
 when 'package'
 
