@@ -2,6 +2,18 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+## 5.0.2 (2019-03-18)
+
+- Add a basic converge unit test - [@tas50](https://github.com/tas50)
+- Make sure we have wget for source installs - [@tas50](https://github.com/tas50)
+- Update Test Kitchen platforms - [@tas50](https://github.com/tas50)
+- Add code owners file - [@tas50](https://github.com/tas50)
+- Rename the kitchen config - [@tas50](https://github.com/tas50)
+- Remove Ubuntu 14.04 testing for 18.04 - [@tas50](https://github.com/tas50)
+- Delete the dangling dependency on ucspi-tcp - [@RoboticCheese](https://github.com/RoboticCheese)
+- Stop creating the runit service directory - [@RoboticCheese](https://github.com/RoboticCheese)
+- Resolve FoodCritic offenses - [@RoboticCheese](https://github.com/RoboticCheese)
+
 ## 5.0.1 (2017-04-26)
 
 - Test with Local Delivery and not Rake
