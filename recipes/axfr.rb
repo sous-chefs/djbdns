@@ -3,7 +3,7 @@
 # Cookbook:: djbdns
 # Recipe:: axfr
 #
-# Copyright:: 2009-2016, Chef Software, Inc
+# Copyright:: 2009-2019, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ include_recipe 'djbdns::default'
 
 user 'axfrdns' do
   uid node['djbdns']['axfrdns_uid']
-  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
+  gid platform_family?('debian') ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/axfrdns'
 end

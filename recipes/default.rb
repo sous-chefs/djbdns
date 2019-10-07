@@ -3,7 +3,7 @@
 # Recipe:: default
 # Author:: Joshua Timberman (<joshua@chef.io>)
 #
-# Copyright:: 2009-2016, Chef Software, Inc
+# Copyright:: 2009-2019, Chef Software, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ when 'package'
 
 when 'source'
 
-  include_recipe 'build-essential'
+  build_essential 'install compilation tools'
 
   package 'wget'
 
@@ -49,7 +49,7 @@ end
 
 user 'dnscache' do
   uid node['djbdns']['dnscache_uid']
-  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
+  gid platform_family?('debian') ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/dnscache'
   system true
@@ -58,7 +58,7 @@ end
 
 user 'dnslog' do
   uid node['djbdns']['dnslog_uid']
-  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
+  gid platform_family?('debian') ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/dnslog'
   system true
@@ -67,7 +67,7 @@ end
 
 user 'tinydns' do
   uid node['djbdns']['tinydns_uid']
-  gid node['platform_family'] == 'debian' ? 'nogroup' : 'nobody'
+  gid platform_family?('debian') ? 'nogroup' : 'nobody'
   shell '/bin/false'
   home '/home/tinydns'
   system true
