@@ -1,4 +1,4 @@
-apt_update 'update' if platform_family?('ubuntu')
+apt_update 'update' if platform_family?('debian')
 
 include_recipe 'djbdns::server'
 include_recipe 'djbdns::cache'
