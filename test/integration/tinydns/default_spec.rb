@@ -1,10 +1,12 @@
+host_ip = interface('eth0').ipv4_addresses.first
+
 control 'public-dnscache' do
   describe port(53) do
     its('protocols') { should include 'udp' }
   end
 
-  describe command('host chef.io') do
-    its(:stdout) { should match(/chef.io has address.*/) }
+  describe command "dig @#{host_ip} chef.io" do
+    its(:stdout) { should match(/^chef\.io\..*IN\s+A/) }
   end
 end
 
