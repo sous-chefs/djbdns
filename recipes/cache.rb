@@ -32,7 +32,7 @@ execute "#{node['djbdns']['bin_dir']}/dnscache-conf dnscache dnslog #{node['djbd
   notifies :run, 'execute[public_cache_update]'
 end
 
-link "#{node['runit']['sv_dir']}/public-dnscache" do
+link '/etc/sv/public-dnscache' do
   to node['djbdns']['public_dnscache_dir']
 end
 

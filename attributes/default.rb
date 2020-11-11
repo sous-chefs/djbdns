@@ -52,7 +52,8 @@ default['djbdns']['tinydns_dir']          = '/etc/djbdns/tinydns'
 default['djbdns']['tinydns_internal_dir'] = '/etc/djbdns/tinydns-internal'
 default['djbdns']['public_dnscache_dir']  = '/etc/djbdns/public-dnscache'
 
-default['djbdns']['install_method'] = platform?('ubuntu') ? 'package' : 'source'
+default['djbdns']['install_method'] =
+  platform?('ubuntu') && node['platform_version'].to_f < 18.04 ? 'package' : 'source'
 
 default['djbdns']['package_name'] = 'djbdns'
 

@@ -10,3 +10,4 @@ end
 
 # for the `host` command used in the tests
 package 'bind-utils' if platform_family?('rhel', 'fedora')
+package 'bind9-host' if platform_family?('debian')

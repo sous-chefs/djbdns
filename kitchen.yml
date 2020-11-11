@@ -4,8 +4,8 @@ driver:
 provisioner:
   name: chef_zero
   product_name: chef
-  enforce_idempotency: true
-  multiple_converge: 2
+  # enforce_idempotency: true
+  # multiple_converge: 2
   deprecations_as_errors: true
 
 verifier:
@@ -24,7 +24,6 @@ suites:
     run_list:
       - recipe[test]
     attributes:
-      domain: test.local
       djbdns:
         service_type: runit
 
@@ -32,7 +31,6 @@ suites:
     run_list:
       - recipe[test]
     attributes:
-      domain: test.local
       djbdns:
         install_method: source
 
@@ -42,6 +40,5 @@ suites:
     includes:
       - ubuntu-16.04
     attributes:
-      domain: test.local
       djbdns:
         package_name: dbndns
