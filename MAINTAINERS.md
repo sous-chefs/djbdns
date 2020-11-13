@@ -7,9 +7,11 @@ This file lists how this cookbook project is maintained. When making changes to 
 Check out [How Cookbooks are Maintained](https://github.com/chef-cookbooks/community_cookbook_documentation/blob/master/CONTRIBUTING.MD) for details on the process and how to become a maintainer or the project lead.
 
 # Project Maintainer
+
 * [Tim Smith](https://github.com/tas50)
 
 # Maintainers
+
 * [Jennifer Davis](https://github.com/sigje)
 * [Tim Smith](https://github.com/tas50)
 * [Thom May](https://github.com/thommay)

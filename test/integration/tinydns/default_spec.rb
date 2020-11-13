@@ -1,10 +1,12 @@
+host_ip = interface('eth0').ipv4_addresses.first
+
 control 'public-dnscache' do
   describe port(53) do
     its('protocols') { should include 'udp' }
   end
 
-  describe command('host chef.io') do
-    its(:stdout) { should match(/chef.io has address.*/) }
+  describe command "dig @#{host_ip} chef.io" do
+    its(:stdout) { should match(/^chef\.io\..*IN\s+A/) }
   end
 end
 
@@ -15,7 +17,7 @@ control 'tinydns' do
   end
 
   describe file('/etc/service/tinydns/root/data') do
-    its(:content) { should match(/.test.local:127.0.0.1:a:259200/) }
+    its(:content) { should match(/\.:127\.0\.0\.1:a:259200/) }
   end
 
   describe file('/etc/service/tinydns/root/data.cdb') do

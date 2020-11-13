@@ -2,6 +2,30 @@
 
 This file is used to list changes made in each version of the djbdns cookbook.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+### Changed
+
+- Sous Chefs Adoption
+- Update Changelog to Sous Chefs
+- Update to use Sous Chefs GH workflow
+- Update test-kitchen to Sous Chefs
+- Update README to sous-chefs
+- Update metadata.rb to Sous Chefs
+
+### Fixed
+
+- Yamllint fixes
+- MDL fixes
+- Fix integration tests
+
+### Added
+
+- Add Ubuntu 20.04 testing
+
 ## 5.0.2 (2019-03-18)
 
 - Add a basic converge unit test - [@tas50](https://github.com/tas50)
@@ -30,6 +54,7 @@ This file is used to list changes made in each version of the djbdns cookbook.
 - Remove RHEL 5 testing as it's near EOL
 
 ## 4.0.0 (2016-12-05)
+
 - Prevent compile error with source updating method
 - Add ChefSpec matchers
 - Convert LWRP to a custom resource and use compat_resource for 12.1+ compatibility
@@ -37,6 +62,7 @@ This file is used to list changes made in each version of the djbdns cookbook.
 - Fix Chef 13 compatibility by updating manage_home
 
 ## 3.0.0 (2016-09-15)
+
 - Testing updates and remove FQDN from templates
 - Update maintainers wording and format [skip-ci]
 - Testing updates
@@ -44,13 +70,13 @@ This file is used to list changes made in each version of the djbdns cookbook.
 
 ## v2.0.0 (2016-05-20)
 
-### BREAKING CHANGE:
+### BREAKING CHANGE
 
 This version removes support for bluepill and daemontools init systems and Arch Linux. If you rely on that support you'll want to pin to the 1.2.0 release
 
 This version now manages all djbdns env files to be compatible with the newest runit release. If you manage these files outside of the djbdns recipe you'll need to use the new attributes
 
-## v1.2.0:
+## v1.2.0
 
 - Removed newlines in configs to prevent restarts
 - Removed inclusion of ucspi-tcp recipe for source installs
@@ -68,7 +94,7 @@ This version now manages all djbdns env files to be compatible with the newest r
 - Resolve rubocop warnings
 - Added additional unit tests
 
-## v1.1.0:
+## v1.1.0
 
 - Update dependency for current runit cookbook, #7
 - Debian is a source based platform, #9 (see issue for background)
@@ -78,25 +104,25 @@ This version now manages all djbdns env files to be compatible with the newest r
 - Manage runit's sv dir for "reasons," #12
 - Remove attributes from metadata, as they're not used for anything anywhere anyway
 
-## v1.0.2:
+## v1.0.2
 
 - [COOK-2262] - pin runit dependency
 
-## v1.0.0:
+## v1.0.0
 
 - [COOK-1739] - use node attributes with hash notation instead of just the attribute name (ipaddress, domain) in djbdns attributes file
 - [COOK-1742] - fix foodcritic warnings, use platform_family where apropriate
 
-## v0.99.4:
+## v0.99.4
 
 - [COOK-1259] - Support local (10.x, 172.x, 192.168.x) reverse lookups in cache
 
-## v0.99.2:
+## v0.99.2
 
 - [COOK-1042] - Corrected a syntax error in axfr.
 - [COOK-740] - use correct directory for tinydns root data
 
-## Previous versions:
+## Previous versions
 
 The various recipes now support multiple service types. This is controlled with the `node[:djbdns][:service_type]` attribute, which is set by platform in the default recipe.
 

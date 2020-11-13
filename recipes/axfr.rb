@@ -35,7 +35,7 @@ directory node['runit']['sv_dir'] do
   recursive true
 end
 
-link "#{node['runit']['sv_dir']}/axfrdns" do
+link '/etc/sv/axfrdns' do
   to node['djbdns']['axfrdns_dir']
 end
 

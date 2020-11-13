@@ -36,7 +36,9 @@ template "#{node['djbdns']['tinydns_dir']}/root/data" do
   notifies :run, 'execute[build-tinydns-data]'
 end
 
-link "#{node['runit']['sv_dir']}/tinydns" do
+directory '/etc/sv' if platform_family?('rhel')
+
+link '/etc/sv/tinydns' do
   to node['djbdns']['tinydns_dir']
 end
 
