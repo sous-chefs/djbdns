@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- resolved cookstyle error: tasks/maintainers.rb:37:7 convention: `Style/FileWrite`
 ## 5.1.2 - *2021-08-31*
 
 - Standardise files with files in sous-chefs/repo-management
