@@ -6,7 +6,8 @@ provisioner:
   product_name: chef
   # enforce_idempotency: true
   # multiple_converge: 2
-  deprecations_as_errors: true
+  # TODO: packagecloud
+  # deprecations_as_errors: true
 
 verifier:
   name: inspec
