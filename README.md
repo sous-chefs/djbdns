@@ -12,7 +12,7 @@ Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are co
 
 This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of Chef cookbook maintainers working together to maintain important cookbooks. If you’d like to know more please visit [sous-chefs.org](https://sous-chefs.org/) or come chat with us on the Chef Community Slack in [#sous-chefs](https://chefcommunity.slack.com/messages/C2V7B88SF).
 
-# Requirements
+## Requirements
 
 ## Platforms
 
@@ -34,7 +34,7 @@ It may work with or without modification on other platforms, particularly using 
 - ucspi-tcp - `tcpserver` is used by the axfr recipe.
 - runit - for setting up the services.
 
-# Attributes
+## Attributes
 
 - `node['djbdns']['tinydns_ipaddress']` - listen address for public facing tinydns server
 - `node['djbdns']['tinydns_internal_ipaddress']` - listen address for internal tinydns server
@@ -55,7 +55,7 @@ It may work with or without modification on other platforms, particularly using 
 - `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
 - `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
 
-# Resources
+## Resources
 
 ## djbdns_rr
 
@@ -85,7 +85,7 @@ end
 
 (The resource `execute[build-tinydns-internal-data]` should run a `make` in the tinydns root directory (aka cwd).
 
-# Recipes
+## Recipes
 
 ## default
 
@@ -114,7 +114,7 @@ Sets up a local DNS caching server.
 
 Sets up a server to be an internal nameserver. To modify resource records in the environment, modify the tinydns-internal-data.erb template, or create entries in a data bag named `djbdns`, and an item named after the domain, with underscores instead of spaces. Example structure of the data bag:
 
-```
+```json
 {
   "id": "int_example_com",
   "ns": [
