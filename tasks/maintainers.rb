@@ -41,8 +41,6 @@ rescue LoadError
   warn "\n*** TomlRb not available. Skipping the Maintainers Rake task\n\n"
 end
 
-private
-
 def preamble
   <<-EOL
 # #{@toml['Preamble']['title']}
