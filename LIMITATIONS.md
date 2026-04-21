@@ -32,11 +32,9 @@
 
 ### Build Dependencies
 
-| Platform Family | Packages / Requirements |
-|-----------------|-------------------------|
-| Debian          | Compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp` |
-| RHEL            | Compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp` |
-| SUSE            | Compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp` |
+- Debian: compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp`
+- RHEL: compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp`
+- SUSE: compiler and build tools; upstream also requires `daemontools` and `ucspi-tcp`
 
 ## Known Issues
 
