@@ -6,7 +6,7 @@ description       'Installs djbdns and configures DNS services'
 version           '5.1.19'
 source_url        'https://github.com/sous-chefs/djbdns'
 issues_url        'https://github.com/sous-chefs/djbdns/issues'
-chef_version      '>= 14'
+chef_version      '>= 15.3'
 
 supports 'amazon'
 supports 'centos'

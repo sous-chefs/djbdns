@@ -18,28 +18,14 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns::default'
-
-execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
-  not_if { ::File.directory?(node['djbdns']['tinydns_dir']) }
+djbdns_server 'tinydns' do
+  install_method node['djbdns']['install_method']
+  package_name node['djbdns']['package_name']
+  bin_dir node['djbdns']['bin_dir']
+  service_dir node['djbdns']['tinydns_dir']
+  listen_ip node['djbdns']['tinydns_ipaddress']
+  domain node['domain']
+  dnscache_uid node['djbdns']['dnscache_uid']
+  dnslog_uid node['djbdns']['dnslog_uid']
+  tinydns_uid node['djbdns']['tinydns_uid']
 end
-
-execute 'build-tinydns-data' do
-  cwd "#{node['djbdns']['tinydns_dir']}/root"
-  command 'make'
-  action :nothing
-end
-
-template "#{node['djbdns']['tinydns_dir']}/root/data" do
-  source 'tinydns-data.erb'
-  mode '0644'
-  notifies :run, 'execute[build-tinydns-data]'
-end
-
-directory '/etc/sv' if platform_family?('rhel')
-
-link '/etc/sv/tinydns' do
-  to node['djbdns']['tinydns_dir']
-end
-
-runit_service 'tinydns'

@@ -18,25 +18,17 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns::default'
-
-user 'axfrdns' do
-  uid node['djbdns']['axfrdns_uid']
-  gid platform_family?('debian') ? 'nogroup' : 'nobody'
-  shell '/bin/false'
-  home '/home/axfrdns'
+djbdns_axfr 'axfrdns' do
+  install_method node['djbdns']['install_method']
+  package_name node['djbdns']['package_name']
+  bin_dir node['djbdns']['bin_dir']
+  service_dir node['djbdns']['axfrdns_dir']
+  sv_dir(node['runit'] && node['runit']['sv_dir'] ? node['runit']['sv_dir'] : '/etc/sv')
+  service_link_dir(node['runit'] && node['runit']['service_dir'] ? node['runit']['service_dir'] : '/etc/service')
+  listen_ip node['djbdns']['axfrdns_ipaddress']
+  tinydns_dir node['djbdns']['tinydns_dir']
+  axfrdns_uid node['djbdns']['axfrdns_uid']
+  dnscache_uid node['djbdns']['dnscache_uid']
+  dnslog_uid node['djbdns']['dnslog_uid']
+  tinydns_uid node['djbdns']['tinydns_uid']
 end
-
-execute "#{node['djbdns']['bin_dir']}/axfrdns-conf axfrdns dnslog #{node['djbdns']['axfrdns_dir']} #{node['djbdns']['tinydns_dir']} #{node['djbdns']['axfrdns_ipaddress']}" do
-  not_if { ::File.directory?(node['djbdns']['axfrdns_dir']) }
-end
-
-directory node['runit']['sv_dir'] do
-  recursive true
-end
-
-link '/etc/sv/axfrdns' do
-  to node['djbdns']['axfrdns_dir']
-end
-
-runit_service 'axfrdns'

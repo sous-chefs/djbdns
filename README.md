@@ -26,7 +26,7 @@ It may work with or without modification on other platforms, particularly using 
 
 ## Chef
 
-- Chef 14+
+- Chef 15.3+
 
 ## Cookbooks
 
@@ -56,6 +56,25 @@ It may work with or without modification on other platforms, particularly using 
 - `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
 
 ## Resources
+
+This cookbook is mid-migration from recipe/attribute-driven behavior toward higher-level resources. The current resource-first surface is:
+
+- `djbdns_install` - installs djbdns and bootstraps shared users/directories.
+- `djbdns_server` - configures the public tinydns service.
+- `djbdns_internal_server` - configures the internal tinydns service with explicit records or legacy data-bag/template inputs.
+- `djbdns_cache` - configures the public dnscache service.
+- `djbdns_axfr` - configures the axfrdns service that fronts an existing public tinydns directory.
+- `djbdns_rr` - appends tinydns records inside an existing tinydns root.
+
+The legacy recipes `default`, `server`, `cache`, `internal_server`, and `axfr` are now compatibility wrappers around those resources.
+
+### Resource Model Roadmap
+
+- `djbdns_install`: shared install/bootstrap layer
+- `djbdns_server`: public tinydns service
+- `djbdns_internal_server`: internal tinydns service with explicit data-bag/template inputs
+- `djbdns_cache`: public dnscache service
+- `djbdns_axfr`: axfr service bound to an existing public tinydns instance
 
 ## djbdns_rr
 
@@ -89,7 +108,7 @@ end
 
 ## default
 
-The default recipe installs djbdns software from package where available, otherwise installs from source. It also sets up the users that will run the djbdns services using the UID's specified by the attributes above. The service type to use is selected based on platform.
+Compatibility wrapper for `djbdns_install`.
 
 The default recipe attempts to install djbdns on as many platforms as possible. It tries to determine the platform's installation method:
 
@@ -104,15 +123,15 @@ Service specific users will be created as system users:
 
 ## axfr
 
-Creates the axfrdns user and sets up the axfrdns service.
+Compatibility wrapper for `djbdns_axfr`.
 
 ## cache
 
-Sets up a local DNS caching server.
+Compatibility wrapper for `djbdns_cache`.
 
 ## internal_server
 
-Sets up a server to be an internal nameserver. To modify resource records in the environment, modify the tinydns-internal-data.erb template, or create entries in a data bag named `djbdns`, and an item named after the domain, with underscores instead of spaces. Example structure of the data bag:
+Compatibility wrapper for `djbdns_internal_server`. The resource supports explicit `records`, or the legacy fallback path of the `tinydns-internal-data.erb` template plus a `djbdns` data bag item named after the domain with underscores instead of spaces. Example structure of the legacy data bag:
 
 ```json
 {
@@ -134,7 +153,7 @@ Aliases and hosts should be an array of hashes, each entry containing the fqdn a
 
 ## server
 
-Sets up a server to be a public nameserver. To modify resource records in the environment, modify the tinydns-data.erb template. The recipe does not yet use the data bag per `internal_server` above, but will in a future release.
+Compatibility wrapper for `djbdns_server`. To modify resource records in the environment, modify the tinydns-data.erb template. The recipe does not yet use the data bag per `internal_server` above, but will in a future release.
 
 ## Contributors
 

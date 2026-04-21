@@ -18,57 +18,18 @@
 # limitations under the License.
 #
 
-include_recipe 'djbdns::default'
-
-execute "#{node['djbdns']['bin_dir']}/tinydns-conf tinydns dnslog #{node['djbdns']['tinydns_internal_dir']} #{node['djbdns']['tinydns_ipaddress']}" do
-  not_if { ::File.directory?(node['djbdns']['tinydns_internal_dir']) }
-end
-
-execute 'build-tinydns-internal-data' do
-  cwd "#{node['djbdns']['tinydns_internal_dir']}/root"
-  command 'make'
-  action :nothing
-end
-
-begin
-
-  dns = data_bag_item('djbdns', node['djbdns']['domain'].tr('.', '_'))
-
-  file "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
-    action :create
-  end
-
-  %w(ns host alias).each do |type|
-    dns[type].each do |record|
-      record.each do |fqdn, ip|
-        djbdns_rr fqdn do
-          cwd "#{node['djbdns']['tinydns_internal_dir']}/root"
-          ip ip
-          type type
-          action :add
-          notifies :run, 'execute[build-tinydns-internal-data]'
-        end
-      end
-    end
-  end
-rescue
-  template "#{node['djbdns']['tinydns_internal_dir']}/root/data" do
-    source 'tinydns-internal-data.erb'
-    mode '0644'
-    notifies :run, 'execute[build-tinydns-internal-data]'
-  end
-
-end
-
-directory node['runit']['sv_dir'] do
-  recursive true
-end
-
-link "#{node['runit']['sv_dir']}/tinydns-internal" do
-  to node['djbdns']['tinydns_internal_dir']
-end
-
-runit_service 'tinydns-internal' do
-  env('ROOT' => "#{node['djbdns']['tinydns_internal_dir']}/root",
-      'IP' => node['djbdns']['tinydns_ipaddress'])
+djbdns_internal_server 'tinydns-internal' do
+  install_method node['djbdns']['install_method']
+  package_name node['djbdns']['package_name']
+  bin_dir node['djbdns']['bin_dir']
+  service_dir node['djbdns']['tinydns_internal_dir']
+  sv_dir(node['runit'] && node['runit']['sv_dir'] ? node['runit']['sv_dir'] : '/etc/sv')
+  service_link_dir(node['runit'] && node['runit']['service_dir'] ? node['runit']['service_dir'] : '/etc/service')
+  listen_ip node['djbdns']['tinydns_ipaddress']
+  zone_domain(node['domain'] || 'domain.local')
+  zone_ip node['djbdns']['tinydns_internal_ipaddress']
+  data_bag_item_id(node['djbdns']['domain']&.tr('.', '_'))
+  dnscache_uid node['djbdns']['dnscache_uid']
+  dnslog_uid node['djbdns']['dnslog_uid']
+  tinydns_uid node['djbdns']['tinydns_uid']
 end
