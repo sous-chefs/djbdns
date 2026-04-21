@@ -41,3 +41,6 @@
 - The cookbook's `install_method` heuristic is cookbook-local logic, not upstream vendor guidance.
 - The cookbook metadata currently advertises platforms that are broader and older than the upstream/package evidence gathered here. Platform modernization should be handled explicitly and separately from this resource migration.
 - `axfrdns` depends on `tcpserver` from `ucspi-tcp`, but the cookbook does not yet model that dependency as a first-class resource concern.
+- Current Dokken integration coverage is still gated by the shared `runit` dependency rather than djbdns resource convergence. In this session:
+  Debian 12 failed because `runit::default` installs `runit-systemd` but then cannot start `runit.service`.
+  Ubuntu 24.04 failed earlier in convergence because `runit-systemd` had no install candidate.
