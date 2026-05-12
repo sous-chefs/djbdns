@@ -3,22 +3,13 @@
 provides :djbdns_install
 unified_mode true
 
+use '_partial/_install'
+
 property :instance_name, String, name_property: true
-property :install_method, String, equal_to: %w(package source),
-                                  default: lazy { platform?('ubuntu') && node['platform_version'].to_f < 18.04 ? 'package' : 'source' }
-property :package_name, String, default: 'djbdns'
-property :source_url, String, default: 'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'
-property :bin_dir, String,
-                   default: lazy { install_method == 'package' ? '/usr/bin' : '/usr/local/bin' }
-property :dnscache_uid, Integer, default: 9997
-property :dnslog_uid, Integer, default: 9998
-property :tinydns_uid, Integer, default: 9999
 
 default_action :create
 
 action :create do
-  include_recipe 'runit'
-
   case new_resource.install_method
   when 'package'
     package new_resource.package_name do
@@ -62,6 +53,18 @@ action :create do
   end
 
   directory '/etc/djbdns'
+end
+
+action :delete do
+  package new_resource.package_name do
+    action :remove
+    only_if { new_resource.install_method == 'package' }
+  end
+
+  directory '/etc/djbdns' do
+    recursive true
+    action :delete
+  end
 end
 
 action_class do

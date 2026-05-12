@@ -8,8 +8,6 @@ describe 'djbdns_server' do
 
   context 'with defaults' do
     recipe do
-      node.override['runit']['sv_dir'] = '/etc/sv'
-      node.override['runit']['service_dir'] = '/etc/service'
       djbdns_server 'tinydns' do
         domain 'example.test'
         manage_install false
@@ -22,7 +20,20 @@ describe 'djbdns_server' do
 
     it { is_expected.to create_template('/etc/djbdns/tinydns/root/data') }
     it { is_expected.to render_file('/etc/djbdns/tinydns/root/data').with_content(/\.example\.test:127\.0\.0\.1:a:259200/) }
-    it { is_expected.to create_link('/etc/sv/tinydns').with(to: '/etc/djbdns/tinydns') }
-    it { is_expected.to enable_runit_service('tinydns') }
+    it { is_expected.to create_systemd_unit('tinydns.service') }
+    it { is_expected.to enable_service('tinydns') }
+    it { is_expected.to start_service('tinydns') }
+  end
+
+  context 'delete action' do
+    recipe do
+      djbdns_server 'tinydns' do
+        manage_install false
+        action :delete
+      end
+    end
+
+    it { is_expected.to delete_systemd_unit('tinydns.service') }
+    it { is_expected.to delete_directory('/etc/djbdns/tinydns') }
   end
 end

@@ -1,12 +1,13 @@
 # djbdns_server
 
-Creates the public tinydns service directory, renders the authoritative data file, and enables the runit service.
+Creates the public tinydns service directory, renders the authoritative data file, and enables a native systemd service.
 
 ## Actions
 
 | Action    | Description                                                 |
 |-----------|-------------------------------------------------------------|
 | `:create` | Configures and enables the public tinydns service (default) |
+| `:delete` | Stops and disables the service, removes the systemd unit, and deletes the service directory |
 
 ## Properties
 
@@ -16,8 +17,8 @@ Creates the public tinydns service directory, renders the authoritative data fil
 | `manage_install`       | Boolean     | `true`                                         | Also run `djbdns_install` before configuring the service |
 | `install_method`       | String      | platform-dependent                             | Install via `package` or `source`                        |
 | `package_name`         | String      | `'djbdns'`                                     | Package name for package installs                        |
-| `source_url`           | String      | `'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'` | Upstream source tarball                                  |
-| `bin_dir`              | String      | derived from `install_method`                  | Location of djbdns binaries used by runit                |
+| `source_url`           | String      | `'http://cr.yp.to/djbdns/djbdns-1.05.tar.gz'`  | Upstream source tarball                                  |
+| `bin_dir`              | String      | derived from `install_method`                  | Location of djbdns binaries used by the systemd service  |
 | `service_dir`          | String      | `'/etc/djbdns/tinydns'`                        | Service root directory                                   |
 | `listen_ip`            | String      | `'127.0.0.1'`                                  | Address passed to `tinydns-conf`                         |
 | `domain`               | String, nil | `node['domain']`                               | Domain rendered into `root/data`                         |

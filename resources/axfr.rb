@@ -3,24 +3,14 @@
 provides :djbdns_axfr
 unified_mode true
 
+use '_partial/_install'
+
 property :service_name, String, name_property: true
 property :manage_install, [true, false], default: true, desired_state: false
-property :install_method, String, equal_to: %w(package source),
-                                  default: lazy { platform?('ubuntu') && node['platform_version'].to_f < 18.04 ? 'package' : 'source' }
-property :package_name, String, default: 'djbdns'
-property :source_url, String, default: 'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'
-property :bin_dir, String,
-                   default: lazy { install_method == 'package' ? '/usr/bin' : '/usr/local/bin' }
 property :service_dir, String, default: '/etc/djbdns/axfrdns'
-property :sv_dir, String, default: '/etc/sv'
-property :service_link_dir, String, default: '/etc/service'
-property :sv_bin, String, default: lazy { platform_family?('debian') ? '/usr/bin/sv' : '/sbin/sv' }
 property :listen_ip, String, default: '127.0.0.1'
 property :tinydns_dir, String, default: '/etc/djbdns/tinydns'
 property :axfrdns_uid, Integer, default: 9996
-property :dnscache_uid, Integer, default: 9997
-property :dnslog_uid, Integer, default: 9998
-property :tinydns_uid, Integer, default: 9999
 
 default_action :create
 
@@ -49,23 +39,34 @@ action :create do
     not_if { ::File.directory?(new_resource.service_dir) }
   end
 
-  directory new_resource.sv_dir do
-    recursive true
-  end
+  manage_djbdns_service(
+    service_name: new_resource.service_name,
+    exec_start: "/bin/sh -c 'exec tcpserver -vDRHl0 -x #{new_resource.service_dir}/tcp.cdb -- #{new_resource.listen_ip} 53 #{new_resource.bin_dir}/axfrdns'",
+    working_directory: new_resource.service_dir,
+    environment: {
+      'ROOT' => "#{new_resource.tinydns_dir}/root",
+      'IP' => new_resource.listen_ip,
+      'UID' => new_resource.axfrdns_uid,
+      'GID' => service_group_gid,
+    },
+    limit_data: '300000'
+  )
+end
 
-  link "#{new_resource.sv_dir}/#{new_resource.service_name}" do
-    to new_resource.service_dir
-  end
+action :delete do
+  remove_djbdns_service(
+    service_name: new_resource.service_name,
+    service_dir: new_resource.service_dir
+  )
 
-  runit_service new_resource.service_name do
-    sv_dir new_resource.sv_dir
-    service_dir new_resource.service_link_dir
-    sv_bin new_resource.sv_bin
-    options(bin_dir: new_resource.bin_dir)
+  user 'axfrdns' do
+    action :remove
   end
 end
 
 action_class do
+  include Djbdns::ServiceUnitHelpers
+
   def service_group
     platform_family?('debian') ? 'nogroup' : 'nobody'
   end

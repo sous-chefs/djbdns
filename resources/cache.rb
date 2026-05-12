@@ -3,18 +3,11 @@
 provides :djbdns_cache
 unified_mode true
 
+use '_partial/_install'
+
 property :service_name, String, name_property: true
 property :manage_install, [true, false], default: true, desired_state: false
-property :install_method, String, equal_to: %w(package source),
-                                  default: lazy { platform?('ubuntu') && node['platform_version'].to_f < 18.04 ? 'package' : 'source' }
-property :package_name, String, default: 'djbdns'
-property :source_url, String, default: 'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'
-property :bin_dir, String,
-                   default: lazy { install_method == 'package' ? '/usr/bin' : '/usr/local/bin' }
 property :service_dir, String, default: '/etc/djbdns/public-dnscache'
-property :sv_dir, String, default: '/etc/sv'
-property :service_link_dir, String, default: '/etc/service'
-property :sv_bin, String, default: lazy { platform_family?('debian') ? '/usr/bin/sv' : '/sbin/sv' }
 property :listen_ip, String, default: lazy { node['ipaddress'] }
 property :allowed_networks, Array,
                             default: lazy { [node['ipaddress'].split('.')[0, 2].join('.')] },
@@ -53,9 +46,6 @@ property :resolved_reverse_domains, Array,
                                     coerce: proc { |value| Array(value) }
 property :cache_size, String, default: '1000000'
 property :data_limit, String, default: '3000000'
-property :dnscache_uid, Integer, default: 9997
-property :dnslog_uid, Integer, default: 9998
-property :tinydns_uid, Integer, default: 9999
 
 default_action :create
 
@@ -84,27 +74,22 @@ action :create do
     notifies :run, "execute[#{new_resource.service_name}_update]"
   end
 
-  directory new_resource.sv_dir do
-    recursive true
-  end
-
-  link "#{new_resource.sv_dir}/#{new_resource.service_name}" do
-    to new_resource.service_dir
-  end
-
-  runit_service new_resource.service_name do
-    sv_dir new_resource.sv_dir
-    service_dir new_resource.service_link_dir
-    sv_bin new_resource.sv_bin
-    env(
+  manage_djbdns_service(
+    service_name: new_resource.service_name,
+    exec_start: "#{new_resource.bin_dir}/dnscache",
+    working_directory: new_resource.service_dir,
+    environment: {
       'ROOT' => "#{new_resource.service_dir}/root",
       'IPSEND' => new_resource.listen_ip,
       'IP' => new_resource.listen_ip,
+      'UID' => new_resource.dnscache_uid,
+      'GID' => service_group_gid,
       'CACHESIZE' => new_resource.cache_size,
-      'DATALIMIT' => new_resource.data_limit
-    )
-    options(bin_dir: new_resource.bin_dir)
-  end
+    },
+    limit_data: new_resource.data_limit,
+    limit_nofile: 250,
+    standard_input: "file:#{new_resource.service_dir}/seed"
+  )
 
   new_resource.allowed_networks.each do |net|
     file "#{new_resource.service_dir}/root/ip/#{net}" do
@@ -113,14 +98,27 @@ action :create do
   end
 
   template "#{new_resource.service_dir}/root/servers/#{new_resource.resolved_domain}" do
+    cookbook 'djbdns'
     source 'dnscache-servers.erb'
     mode '0644'
   end
 
   new_resource.resolved_reverse_domains.each do |reverse_domain|
     template "#{new_resource.service_dir}/root/servers/#{reverse_domain}" do
+      cookbook 'djbdns'
       source 'dnscache-servers.erb'
       mode '0644'
     end
   end
+end
+
+action :delete do
+  remove_djbdns_service(
+    service_name: new_resource.service_name,
+    service_dir: new_resource.service_dir
+  )
+end
+
+action_class do
+  include Djbdns::ServiceUnitHelpers
 end

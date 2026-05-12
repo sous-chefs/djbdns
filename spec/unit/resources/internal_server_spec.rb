@@ -24,8 +24,9 @@ describe 'djbdns_internal_server' do
     end
 
     it { is_expected.to create_file('/etc/djbdns/tinydns-internal/root/data') }
-    it { is_expected.to create_link('/etc/sv/tinydns-internal').with(to: '/etc/djbdns/tinydns-internal') }
-    it { is_expected.to enable_runit_service('tinydns-internal') }
+    it { is_expected.to create_systemd_unit('tinydns-internal.service') }
+    it { is_expected.to enable_service('tinydns-internal') }
+    it { is_expected.to start_service('tinydns-internal') }
   end
 
   context 'with template fallback' do
@@ -40,5 +41,17 @@ describe 'djbdns_internal_server' do
 
     it { is_expected.to create_template('/etc/djbdns/tinydns-internal/root/data') }
     it { is_expected.to render_file('/etc/djbdns/tinydns-internal/root/data').with_content(/\.int\.example\.test:192\.0\.2\.20:a:259200/) }
+  end
+
+  context 'delete action' do
+    recipe do
+      djbdns_internal_server 'tinydns-internal' do
+        manage_install false
+        action :delete
+      end
+    end
+
+    it { is_expected.to delete_systemd_unit('tinydns-internal.service') }
+    it { is_expected.to delete_directory('/etc/djbdns/tinydns-internal') }
   end
 end

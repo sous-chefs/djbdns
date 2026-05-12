@@ -12,7 +12,6 @@ describe 'djbdns_install' do
       djbdns_install 'default'
     end
 
-    it { is_expected.to include_recipe('runit::default') }
     it { is_expected.to install_package('djbdns') }
     it { is_expected.to create_user('dnscache').with(uid: 9997) }
     it { is_expected.to create_user('dnslog').with(uid: 9998) }
@@ -29,5 +28,17 @@ describe 'djbdns_install' do
 
     it { is_expected.to create_remote_file('/tmp/djbdns-1.05.tar.gz') }
     it { is_expected.to run_bash('install_djbdns') }
+  end
+
+  context 'delete action' do
+    platform 'ubuntu', '22.04'
+
+    recipe do
+      djbdns_install 'default' do
+        action :delete
+      end
+    end
+
+    it { is_expected.to delete_directory('/etc/djbdns') }
   end
 end

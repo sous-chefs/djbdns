@@ -6,7 +6,7 @@
 [![OpenCollective](https://opencollective.com/sous-chefs/sponsors/badge.svg)](#sponsors)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are configured to start up under runit.
+Installs and configures Dan Bernstein's DNS tinydns, aka djbdns. Services are configured with native systemd units managed by Chef's built-in resources.
 
 ## Maintainers
 
@@ -32,49 +32,23 @@ It may work with or without modification on other platforms, particularly using 
 
 * build-essential - for compiling the source.
 * ucspi-tcp - `tcpserver` is used by the axfr recipe.
-* runit - for setting up the services.
 
-## Attributes
+## Migration
 
-* `node['djbdns']['tinydns_ipaddress']` - listen address for public facing tinydns server
-* `node['djbdns']['tinydns_internal_ipaddress']` - listen address for internal tinydns server
-* `node['djbdns']['public_dnscache_ipaddress']` - listen address for public DNS cache
-* `node['djbdns']['axfrdns_ipaddress']` - listen address for axfrdns
-* `node['djbdns']['public_dnscache_allowed_networks']` - subnets that are allowed to talk to the dnscache.
-* `node['djbdns']['tinydns_internal_resolved_domain']` - default domain this tinydns serves
-* `node['djbdns']['tinydns_internal_resolved_reverse_domains']` - default in-addr.arpa domains this tinydns serves
-* `node['djbdns']['axfrdns_dir']` - default location of the axfrdns service and configuration, default `/etc/djbdns/axfrdns`
-* `node['djbdns']['tinydns_dir']` - default location of the tinydns service and configuration, default `/etc/djbdns/tinydns`
-* `node['djbdns']['tinydns_internal_dir']` - default location of the tinydns internal service and configuration, default `/etc/djbdns/tinydns_internal`
-* `node['djbdns']['public_dnscache_dir']` - default location of the public dnscache service and configuration, default `/etc/djbdns/public-dnscache`
-* `node['djbdns']['bin_dir']` - default location where binaries will be stored.
-* `node['djbdns']['axfrdns_uid']` - default uid for the axfrdns user
-* `node['djbdns']['dnscache_uid']` - default uid for the dnscache user
-* `node['djbdns']['dnslog_uid']` - default uid for the dnslog user
-* `node['djbdns']['tinydns_uid']` - default uid for the tinydns user
-* `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
-* `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
+This cookbook is resource-only. Legacy recipes and `node['djbdns']` attributes have been removed; see [migration.md](migration.md) for the breaking-change mapping.
 
 ## Resources
 
-This cookbook is mid-migration from recipe/attribute-driven behavior toward higher-level resources. The current resource-first surface is:
+The public API is the custom resource surface:
 
 * `djbdns_install` - installs djbdns and bootstraps shared users/directories.
 * `djbdns_server` - configures the public tinydns service.
-* `djbdns_internal_server` - configures the internal tinydns service with explicit records or legacy data-bag/template inputs.
+* `djbdns_internal_server` - configures the internal tinydns service with explicit records or data-bag/template inputs.
 * `djbdns_cache` - configures the public dnscache service.
 * `djbdns_axfr` - configures the axfrdns service that fronts an existing public tinydns directory.
 * `djbdns_rr` - appends tinydns records inside an existing tinydns root.
 
-The legacy recipes `default`, `server`, `cache`, `internal_server`, and `axfr` are now compatibility wrappers around those resources.
-
-### Resource Model Roadmap
-
-* `djbdns_install`: shared install/bootstrap layer
-* `djbdns_server`: public tinydns service
-* `djbdns_internal_server`: internal tinydns service with explicit data-bag/template inputs
-* `djbdns_cache`: public dnscache service
-* `djbdns_axfr`: axfr service bound to an existing public tinydns instance
+Resource documentation lives under `documentation/`.
 
 ## djbdns_rr
 
@@ -83,13 +57,14 @@ Adds a resource record for the specified FQDN.
 ### Actions
 
 * `:add`: Creates a new entry in the tinydns data file with the `add-X` scripts in the tinydns root directory.
+* `:delete`: Removes matching entries from the tinydns data file.
 
-### Attribute Parameters
+### Properties
 
 * `fqdn`: name attribute. specifies the fully qualified domain name of the record.
 * `ip`: ip address for the record.
 * `type`: specifies the type of entry. valid types are: alias, alias6, childns, host, host6, mx, and ns. default is `host`.
-* `cwd`: current working directory where the add scripts and data files must be located. default is the node attribute `djbdns[:tinydns_internal_dir]`, usually `/etc/djbdns/tinydns-internal`.
+* `cwd`: current working directory where the add scripts and data files must be located. default is `/etc/djbdns/tinydns-internal/root`.
 
 ### Example
 
@@ -102,36 +77,11 @@ djbdns_rr 'www.example.com' do
 end
 ```
 
-(The resource `execute[build-tinydns-internal-data]` should run a `make` in the tinydns root directory (aka cwd).
+The resource `execute[build-tinydns-internal-data]` should run `make` in the tinydns root directory.
 
-## Recipes
+## Data Bag Records
 
-## default
-
-Compatibility wrapper for `djbdns_install`.
-
-The default recipe attempts to install djbdns on as many platforms as possible. It tries to determine the platform's installation method:
-
-* Debian will install from packages
-* All other distributions will install from source.
-
-Service specific users will be created as system users:
-
-* dnscache
-* dnslog
-* tinydns
-
-## axfr
-
-Compatibility wrapper for `djbdns_axfr`.
-
-## cache
-
-Compatibility wrapper for `djbdns_cache`.
-
-## internal_server
-
-Compatibility wrapper for `djbdns_internal_server`. The resource supports explicit `records`, or the legacy fallback path of the `tinydns-internal-data.erb` template plus a `djbdns` data bag item named after the domain with underscores instead of spaces. Example structure of the legacy data bag:
+`djbdns_internal_server` supports explicit `records`, or a data-bag/template path using a `djbdns` data bag item named after the domain with underscores instead of spaces. Example structure:
 
 ```json
 {
@@ -149,11 +99,7 @@ Compatibility wrapper for `djbdns_internal_server`. The resource supports explic
 }
 ```
 
-Aliases and hosts should be an array of hashes, each entry containing the fqdn as the key and the IP as the value. In this example 192.168.0.5 is the IP of the nameserver and we're listing it as authoritative for int.example.com and for reverse DNS for 192.168.0.x.
-
-## server
-
-Compatibility wrapper for `djbdns_server`. To modify resource records in the environment, modify the tinydns-data.erb template. The recipe does not yet use the data bag per `internal_server` above, but will in a future release.
+Aliases and hosts should be an array of hashes, each entry containing the fqdn as the key and the IP as the value. In this example 192.168.0.5 is the IP of the nameserver and is listed as authoritative for int.example.com and for reverse DNS for 192.168.0.x.
 
 ## Contributors
 

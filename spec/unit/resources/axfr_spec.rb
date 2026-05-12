@@ -19,7 +19,21 @@ describe 'djbdns_axfr' do
       is_expected.to run_execute('/usr/local/bin/axfrdns-conf axfrdns dnslog /etc/djbdns/axfrdns /etc/djbdns/tinydns 127.0.0.1')
     end
 
-    it { is_expected.to create_link('/etc/sv/axfrdns').with(to: '/etc/djbdns/axfrdns') }
-    it { is_expected.to enable_runit_service('axfrdns') }
+    it { is_expected.to create_systemd_unit('axfrdns.service') }
+    it { is_expected.to enable_service('axfrdns') }
+    it { is_expected.to start_service('axfrdns') }
+  end
+
+  context 'delete action' do
+    recipe do
+      djbdns_axfr 'axfrdns' do
+        manage_install false
+        action :delete
+      end
+    end
+
+    it { is_expected.to delete_systemd_unit('axfrdns.service') }
+    it { is_expected.to delete_directory('/etc/djbdns/axfrdns') }
+    it { is_expected.to remove_user('axfrdns') }
   end
 end

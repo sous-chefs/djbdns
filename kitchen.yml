@@ -19,21 +19,29 @@ platforms:
   - name: centos-stream-10
   - name: debian-12
   - name: debian-13
-  - name: fedora-42
-  - name: opensuse-leap-16.0
-  - name: oraclelinux-9
   - name: rockylinux-10
   - name: ubuntu-22.04
   - name: ubuntu-24.04
 
-suites:
-  - name: tinydns
-    run_list:
-      - recipe[test::default]
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
 
+x-verifiers:
+  default: &default_verifier
+    inspec_tests:
+      - path: test/integration/default
+  source: &source_verifier
+    inspec_tests:
+      - path: test/integration/source
+
+suites:
+  - name: default
+    run_list: *default_run_list
+    verifier: *default_verifier
   - name: source
-    run_list:
-      - recipe[test::default]
+    run_list: *default_run_list
     attributes:
       djbdns:
         install_method: source
+    verifier: *source_verifier

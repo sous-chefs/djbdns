@@ -18,5 +18,3 @@ supports 'oracle', '>= 9.0'
 supports 'redhat', '>= 9.0'
 supports 'rocky', '>= 9.0'
 supports 'ubuntu', '>= 22.04'
-
-depends 'runit', '>= 1.6.0'

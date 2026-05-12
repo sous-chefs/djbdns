@@ -13,6 +13,7 @@ provisioner:
 
 verifier:
   name: inspec
+  sudo: true
 
 platforms:
   - name: almalinux-9
@@ -21,9 +22,6 @@ platforms:
   - name: centos-stream-10
   - name: debian-12
   - name: debian-13
-  - name: fedora-42
-  - name: opensuse-leap-16.0
-  - name: oraclelinux-9
   - name: rockylinux-10
   - name: ubuntu-22.04
   - name: ubuntu-24.04

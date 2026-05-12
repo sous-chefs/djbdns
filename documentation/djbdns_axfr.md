@@ -1,12 +1,13 @@
 # djbdns_axfr
 
-Creates the axfrdns service directory, bootstraps the `axfrdns` user, and enables the runit-backed zone transfer service.
+Creates the axfrdns service directory, bootstraps the `axfrdns` user, and enables a native systemd zone transfer service.
 
 ## Actions
 
 | Action    | Description                                          |
 |-----------|------------------------------------------------------|
 | `:create` | Configures and enables the axfrdns service (default) |
+| `:delete` | Stops and disables the service, removes the systemd unit, deletes the service directory, and removes the `axfrdns` user |
 
 ## Properties
 
@@ -16,11 +17,9 @@ Creates the axfrdns service directory, bootstraps the `axfrdns` user, and enable
 | `manage_install`   | Boolean | `true`                                         | Also run `djbdns_install` before configuring the service |
 | `install_method`   | String  | platform-dependent                             | Install via `package` or `source`                        |
 | `package_name`     | String  | `'djbdns'`                                     | Package name for package installs                        |
-| `source_url`       | String  | `'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'` | Upstream source tarball                                  |
-| `bin_dir`          | String  | derived from `install_method`                  | Location of djbdns binaries used by runit                |
+| `source_url`       | String  | `'http://cr.yp.to/djbdns/djbdns-1.05.tar.gz'`  | Upstream source tarball                                  |
+| `bin_dir`          | String  | derived from `install_method`                  | Location of djbdns binaries used by the systemd service  |
 | `service_dir`      | String  | `'/etc/djbdns/axfrdns'`                        | Service root directory                                   |
-| `sv_dir`           | String  | `'/etc/sv'`                                    | runit service directory                                  |
-| `service_link_dir` | String  | `'/etc/service'`                               | runit enabled-service directory                          |
 | `listen_ip`        | String  | `'127.0.0.1'`                                  | Address passed to `axfrdns-conf`                         |
 | `tinydns_dir`      | String  | `'/etc/djbdns/tinydns'`                        | Public tinydns directory used by axfrdns                 |
 | `axfrdns_uid`      | Integer | `9996`                                         | UID for the `axfrdns` account                            |

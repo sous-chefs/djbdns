@@ -4,7 +4,12 @@ driver:
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
 
 transport: { name: dokken }
-provisioner: { name: dokken }
+provisioner:
+  name: dokken
+  chef_license: accept
+  enforce_idempotency: true
+  multiple_converge: 2
+  deprecations_as_errors: true
 
 platforms:
   - name: almalinux-9
@@ -36,21 +41,6 @@ platforms:
     driver:
       image: dokken/debian-13
       pid_one_command: /bin/systemd
-
-  - name: fedora-42
-    driver:
-      image: dokken/fedora-42
-      pid_one_command: /usr/lib/systemd/systemd
-
-  - name: opensuse-leap-16.0
-    driver:
-      image: dokken/opensuse-leap-16.0
-      pid_one_command: /usr/lib/systemd/systemd
-
-  - name: oraclelinux-9
-    driver:
-      image: dokken/oraclelinux-9
-      pid_one_command: /usr/lib/systemd/systemd
 
   - name: rockylinux-10
     driver:

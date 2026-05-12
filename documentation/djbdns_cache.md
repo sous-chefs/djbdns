@@ -1,12 +1,13 @@
 # djbdns_cache
 
-Creates the public dnscache service directory, manages allowed client networks, and enables the runit-backed cache service.
+Creates the public dnscache service directory, manages allowed client networks, and enables a native systemd cache service.
 
 ## Actions
 
 | Action    | Description                                                  |
 |-----------|--------------------------------------------------------------|
 | `:create` | Configures and enables the public dnscache service (default) |
+| `:delete` | Stops and disables the service, removes the systemd unit, and deletes the service directory |
 
 ## Properties
 
@@ -16,15 +17,15 @@ Creates the public dnscache service directory, manages allowed client networks, 
 | `manage_install`           | Boolean | `true`                                         | Also run `djbdns_install` before configuring the service |
 | `install_method`           | String  | platform-dependent                             | Install via `package` or `source`                        |
 | `package_name`             | String  | `'djbdns'`                                     | Package name for package installs                        |
-| `source_url`               | String  | `'https://cr.yp.to/djbdns/djbdns-1.05.tar.gz'` | Upstream source tarball                                  |
-| `bin_dir`                  | String  | derived from `install_method`                  | Location of djbdns binaries used by runit                |
+| `source_url`               | String  | `'http://cr.yp.to/djbdns/djbdns-1.05.tar.gz'`  | Upstream source tarball                                  |
+| `bin_dir`                  | String  | derived from `install_method`                  | Location of djbdns binaries used by the systemd service  |
 | `service_dir`              | String  | `'/etc/djbdns/public-dnscache'`                | Service root directory                                   |
 | `listen_ip`                | String  | `node['ipaddress']`                            | Address passed to `dnscache-conf`                        |
 | `allowed_networks`         | Array   | first two IP octets                            | Networks allowed to query the cache                      |
 | `resolved_domain`          | String  | `node['domain'] \|\| 'domain.local'`           | Internal domain pinned to localhost                      |
 | `resolved_reverse_domains` | Array   | RFC 6303-style defaults                        | Reverse zones pinned to localhost                        |
 | `cache_size`               | String  | `'1000000'`                                    | dnscache `CACHESIZE` environment value                   |
-| `data_limit`               | String  | `'3000000'`                                    | dnscache `DATALIMIT` environment value                   |
+| `data_limit`               | String  | `'3000000'`                                    | Memory limit applied to the systemd service              |
 | `dnscache_uid`             | Integer | `9997`                                         | UID for the `dnscache` account                           |
 | `dnslog_uid`               | Integer | `9998`                                         | UID for the `dnslog` account                             |
 | `tinydns_uid`              | Integer | `9999`                                         | UID for the `tinydns` account                            |
