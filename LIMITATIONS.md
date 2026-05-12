@@ -17,6 +17,7 @@
 
 * I did not find a primary-source upstream package repository for RHEL-family systems.
 * Inference: the cookbook's source-install path remains the only installation path directly backed by upstream documentation for RHEL-family platforms.
+* Current integration evidence supports AlmaLinux 9 and CentOS Stream 9 only. Amazon Linux 2023, CentOS Stream 10, and Rocky Linux 10 are not advertised in CI or metadata because they are not currently viable in this cookbook's Dokken matrix.
 
 ### Zypper (SUSE)
 
@@ -39,6 +40,6 @@
 ## Known Issues
 
 * The cookbook's `install_method` heuristic is cookbook-local logic, not upstream vendor guidance.
-* The cookbook metadata currently advertises platforms that are broader and older than the upstream/package evidence gathered here. Platform modernization should be handled explicitly and separately from this resource migration.
 * `axfrdns` depends on `tcpserver` from `ucspi-tcp`, but the cookbook does not yet model that dependency as a first-class resource concern.
 * Prior Dokken failures were gated by the shared `runit` dependency rather than djbdns resource convergence. This migration replaces that supervision layer with native systemd units so the remaining integration coverage reflects djbdns behavior instead of `runit` packaging.
+* Debian 13 and RHEL-family 10 builds currently expose upstream `djbdns-1.05` compile incompatibilities with newer system toolchains. They should be revisited as a separate platform enablement effort rather than advertised as supported.

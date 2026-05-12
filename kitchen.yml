@@ -14,12 +14,8 @@ verifier:
 
 platforms:
   - name: almalinux-9
-  - name: amazonlinux-2023
   - name: centos-stream-9
-  - name: centos-stream-10
   - name: debian-12
-  - name: debian-13
-  - name: rockylinux-10
   - name: ubuntu-22.04
   - name: ubuntu-24.04
 

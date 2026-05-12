@@ -16,11 +16,13 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 
 ## Platforms
 
-The following platforms are supported via test kitchen.
+The following platforms are supported via Test Kitchen.
 
-* Ubuntu
-* Debian
-* RHEL
+* AlmaLinux 9
+* CentOS Stream 9
+* Debian 12
+* Ubuntu 22.04
+* Ubuntu 24.04
 
 It may work with or without modification on other platforms, particularly using the `source` install method.
 
