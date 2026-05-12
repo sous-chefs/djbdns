@@ -4,15 +4,15 @@ Creates the axfrdns service directory, bootstraps the `axfrdns` user, and enable
 
 ## Actions
 
-| Action    | Description                                          |
-|-----------|------------------------------------------------------|
-| `:create` | Configures and enables the axfrdns service (default) |
+| Action    | Description                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `:create` | Configures and enables the axfrdns service (default)                                                                    |
 | `:delete` | Stops and disables the service, removes the systemd unit, deletes the service directory, and removes the `axfrdns` user |
 
 ## Properties
 
 | Property           | Type    | Default                                        | Description                                              |
-|--------------------|---------|------------------------------------------------|----------------------------------------------------------|
+| ------------------ | ------- | ---------------------------------------------- | -------------------------------------------------------- |
 | `service_name`     | String  | name property                                  | Service name, typically `axfrdns`                        |
 | `manage_install`   | Boolean | `true`                                         | Also run `djbdns_install` before configuring the service |
 | `install_method`   | String  | platform-dependent                             | Install via `package` or `source`                        |

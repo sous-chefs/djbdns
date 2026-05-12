@@ -4,15 +4,15 @@ Installs djbdns and creates the base service accounts and directories used by th
 
 ## Actions
 
-| Action    | Description                                                           |
-|-----------|-----------------------------------------------------------------------|
-| `:create` | Installs djbdns and bootstraps shared users and directories (default) |
+| Action    | Description                                                                  |
+| --------- | ---------------------------------------------------------------------------- |
+| `:create` | Installs djbdns and bootstraps shared users and directories (default)        |
 | `:delete` | Removes the installed package when package-managed and deletes `/etc/djbdns` |
 
 ## Properties
 
 | Property         | Type    | Default                                        | Description                          |
-|------------------|---------|------------------------------------------------|--------------------------------------|
+| ---------------- | ------- | ---------------------------------------------- | ------------------------------------ |
 | `instance_name`  | String  | name property                                  | Resource identity                    |
 | `install_method` | String  | platform-dependent                             | Install via `package` or `source`    |
 | `package_name`   | String  | `'djbdns'`                                     | Package name for package installs    |

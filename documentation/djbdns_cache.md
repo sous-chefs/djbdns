@@ -4,9 +4,9 @@ Creates the public dnscache service directory, manages allowed client networks, 
 
 ## Actions
 
-| Action    | Description                                                  |
-|-----------|--------------------------------------------------------------|
-| `:create` | Configures and enables the public dnscache service (default) |
+| Action    | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `:create` | Configures and enables the public dnscache service (default)                                |
 | `:delete` | Stops and disables the service, removes the systemd unit, and deletes the service directory |
 
 ## Properties

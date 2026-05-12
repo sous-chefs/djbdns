@@ -4,19 +4,19 @@ Adds tinydns records by running the generated `add-*` helper scripts in an exist
 
 ## Actions
 
-| Action | Description                                                             |
-|--------|-------------------------------------------------------------------------|
-| `:add` | Adds a tinydns resource record when it does not already exist (default) |
-| `:delete` | Removes matching tinydns resource records from the data file |
+| Action    | Description                                                             |
+| --------- | ----------------------------------------------------------------------- |
+| `:add`    | Adds a tinydns resource record when it does not already exist (default) |
+| `:delete` | Removes matching tinydns resource records from the data file            |
 
 ## Properties
 
 | Property | Type   | Default                                       | Description                                                                        |
-|----------|--------|-----------------------------------------------|------------------------------------------------------------------------------------|
+| -------- | ------ | --------------------------------------------- | ---------------------------------------------------------------------------------- |
 | `fqdn`   | String | name property                                 | Fully qualified domain name to manage                                              |
 | `ip`     | String | required                                      | IP address for the record                                                          |
 | `type`   | String | `'host'`                                      | Record helper to run: `alias`, `alias6`, `childns`, `host`, `host6`, `mx`, or `ns` |
-| `cwd`    | String | `/etc/djbdns/tinydns-internal/root`        | Tinydns root directory containing `data` and `add-*` helpers                       |
+| `cwd`    | String | `/etc/djbdns/tinydns-internal/root`           | Tinydns root directory containing `data` and `add-*` helpers                       |
 
 ## Examples
 

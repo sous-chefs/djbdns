@@ -4,15 +4,15 @@ Creates the public tinydns service directory, renders the authoritative data fil
 
 ## Actions
 
-| Action    | Description                                                 |
-|-----------|-------------------------------------------------------------|
-| `:create` | Configures and enables the public tinydns service (default) |
+| Action    | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `:create` | Configures and enables the public tinydns service (default)                                 |
 | `:delete` | Stops and disables the service, removes the systemd unit, and deletes the service directory |
 
 ## Properties
 
 | Property               | Type        | Default                                        | Description                                              |
-|------------------------|-------------|------------------------------------------------|----------------------------------------------------------|
+| ---------------------- | ----------- | ---------------------------------------------- | -------------------------------------------------------- |
 | `service_name`         | String      | name property                                  | Service name, typically `tinydns`                        |
 | `manage_install`       | Boolean     | `true`                                         | Also run `djbdns_install` before configuring the service |
 | `install_method`       | String      | platform-dependent                             | Install via `package` or `source`                        |

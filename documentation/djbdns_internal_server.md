@@ -4,9 +4,9 @@ Creates the internal tinydns service and supports either explicit record data or
 
 ## Actions
 
-| Action    | Description                                                   |
-|-----------|---------------------------------------------------------------|
-| `:create` | Configures and enables the internal tinydns service (default) |
+| Action    | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `:create` | Configures and enables the internal tinydns service (default)                               |
 | `:delete` | Stops and disables the service, removes the systemd unit, and deletes the service directory |
 
 ## Properties
