@@ -18,6 +18,8 @@ action :create do
   when 'source'
     build_essential 'install compilation tools'
 
+    package 'tar'
+
     remote_file source_archive_path do
       source new_resource.source_url
       mode '0644'
@@ -30,6 +32,7 @@ action :create do
       code <<~EOH
         tar xzvf #{source_archive_path}
         cd #{source_extract_dir}
+        grep -q '#include <unistd.h>' seek_set.c || sed -i '1i#include <unistd.h>' seek_set.c
         echo gcc -O2 -include /usr/include/errno.h > conf-cc
         make setup check
       EOH

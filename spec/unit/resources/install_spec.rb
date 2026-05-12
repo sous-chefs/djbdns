@@ -27,7 +27,9 @@ describe 'djbdns_install' do
     end
 
     it { is_expected.to create_remote_file('/tmp/djbdns-1.05.tar.gz') }
+    it { is_expected.to install_package('tar') }
     it { is_expected.to run_bash('install_djbdns') }
+    it { is_expected.to run_bash('install_djbdns').with_code(/#include <unistd\.h>/) }
   end
 
   context 'delete action' do
