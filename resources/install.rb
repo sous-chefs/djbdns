@@ -33,6 +33,8 @@ action :create do
         tar xzvf #{source_archive_path}
         cd #{source_extract_dir}
         grep -q '#include <unistd.h>' seek_set.c || sed -i '1i#include <unistd.h>' seek_set.c
+        grep -q '#include <grp.h>' chkshsgr.c || sed -i '1i#include <grp.h>' chkshsgr.c
+        grep -q '#include <unistd.h>' chkshsgr.c || sed -i '1i#include <unistd.h>' chkshsgr.c
         echo gcc -O2 -include /usr/include/errno.h > conf-cc
         make setup check
       EOH

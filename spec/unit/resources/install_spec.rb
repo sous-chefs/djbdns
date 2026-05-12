@@ -30,6 +30,8 @@ describe 'djbdns_install' do
     it { is_expected.to install_package('tar') }
     it { is_expected.to run_bash('install_djbdns') }
     it { is_expected.to run_bash('install_djbdns').with_code(/#include <unistd\.h>/) }
+    it { is_expected.to run_bash('install_djbdns').with_code(/#include <grp\.h>/) }
+    it { is_expected.to run_bash('install_djbdns').with_code(/chkshsgr\.c/) }
   end
 
   context 'delete action' do
