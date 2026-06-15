@@ -18,101 +18,63 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 
 The following platforms are supported via test kitchen.
 
-- Ubuntu
+- AlmaLinux
+- Amazon Linux
+- CentOS Stream
 - Debian
-- RHEL
+- Fedora
+- Oracle Linux
+- Red Hat Enterprise Linux
+- Rocky Linux
+- Ubuntu
 
-It may work with or without modification on other platforms, particularly using the `source` install method.
+See [LIMITATIONS.md](LIMITATIONS.md) for package and source installation notes.
 
 ## Chef
 
-- Chef 14+
+- Chef 15.3+
 
 ## Cookbooks
 
-- build-essential - for compiling the source.
-- ucspi-tcp - `tcpserver` is used by the axfr recipe.
 - runit - for setting up the services.
 
-## Attributes
+## Migration
 
-- `node['djbdns']['tinydns_ipaddress']` - listen address for public facing tinydns server
-- `node['djbdns']['tinydns_internal_ipaddress']` - listen address for internal tinydns server
-- `node['djbdns']['public_dnscache_ipaddress']` - listen address for public DNS cache
-- `node['djbdns']['axfrdns_ipaddress']` - listen address for axfrdns
-- `node['djbdns']['public_dnscache_allowed_networks']` - subnets that are allowed to talk to the dnscache.
-- `node['djbdns']['tinydns_internal_resolved_domain']` - default domain this tinydns serves
-- `node['djbdns']['tinydns_internal_resolved_reverse_domains']` - default in-addr.arpa domains this tinydns serves
-- `node['djbdns']['axfrdns_dir']` - default location of the axfrdns service and configuration, default `/etc/djbdns/axfrdns`
-- `node['djbdns']['tinydns_dir']` - default location of the tinydns service and configuration, default `/etc/djbdns/tinydns`
-- `node['djbdns']['tinydns_internal_dir']` - default location of the tinydns internal service and configuration, default `/etc/djbdns/tinydns_internal`
-- `node['djbdns']['public_dnscache_dir']` - default location of the public dnscache service and configuration, default `/etc/djbdns/public-dnscache`
-- `node['djbdns']['bin_dir']` - default location where binaries will be stored.
-- `node['djbdns']['axfrdns_uid']` - default uid for the axfrdns user
-- `node['djbdns']['dnscache_uid']` - default uid for the dnscache user
-- `node['djbdns']['dnslog_uid']` - default uid for the dnslog user
-- `node['djbdns']['tinydns_uid']` - default uid for the tinydns user
-- `node['djbdns']['package_name']` - name of the djbdns package. this shouldn't be changed most of the time, but may be necessary to use the [Debian fork](http://en.wikipedia.org/wiki/Dbndns), `dbndns`.
-- `node['djbdns']['install_method']` - method used to install djbdns, can be `package`, or `source`.
+This cookbook now exposes custom resources instead of root recipes and node attributes. See [migration.md](migration.md) for the breaking migration guide.
 
 ## Resources
 
-## djbdns_rr
+* [djbdns_install](documentation/djbdns_install.md)
+* [djbdns_tinydns](documentation/djbdns_tinydns.md)
+* [djbdns_dnscache](documentation/djbdns_dnscache.md)
+* [djbdns_axfrdns](documentation/djbdns_axfrdns.md)
+* [djbdns_rr](documentation/djbdns_rr.md)
 
-Adds a resource record for the specified FQDN.
+## Examples
 
-### Actions
-
-- `:add`: Creates a new entry in the tinydns data file with the `add-X` scripts in the tinydns root directory.
-
-### Attribute Parameters
-
-- `fqdn`: name attribute. specifies the fully qualified domain name of the record.
-- `ip`: ip address for the record.
-- `type`: specifies the type of entry. valid types are: alias, alias6, childns, host, host6, mx, and ns. default is `host`.
-- `cwd`: current working directory where the add scripts and data files must be located. default is the node attribute `djbdns[:tinydns_internal_dir]`, usually `/etc/djbdns/tinydns-internal`.
-
-### Example
+### Authoritative tinydns
 
 ```ruby
-djbdns_rr 'www.example.com' do
-  ip '192.168.0.100'
-  type 'host'
-  action :add
-  notifies :run, 'execute[build-tinydns-internal-data]'
+djbdns_tinydns 'tinydns' do
+  domain 'example.test'
+  ipaddress '127.0.0.1'
+  action :create
 end
 ```
 
-(The resource `execute[build-tinydns-internal-data]` should run a `make` in the tinydns root directory (aka cwd).
+### DNS cache
 
-## Recipes
+```ruby
+djbdns_dnscache 'public-dnscache' do
+  ipaddress '192.0.2.10'
+  allowed_networks ['192.0']
+  action :create
+end
+```
 
-## default
+### Internal tinydns from a data bag
 
-The default recipe installs djbdns software from package where available, otherwise installs from source. It also sets up the users that will run the djbdns services using the UID's specified by the attributes above. The service type to use is selected based on platform.
-
-The default recipe attempts to install djbdns on as many platforms as possible. It tries to determine the platform's installation method:
-
-- Debian will install from packages
-- All other distributions will install from source.
-
-Service specific users will be created as system users:
-
-- dnscache
-- dnslog
-- tinydns
-
-## axfr
-
-Creates the axfrdns user and sets up the axfrdns service.
-
-## cache
-
-Sets up a local DNS caching server.
-
-## internal_server
-
-Sets up a server to be an internal nameserver. To modify resource records in the environment, modify the tinydns-internal-data.erb template, or create entries in a data bag named `djbdns`, and an item named after the domain, with underscores instead of spaces. Example structure of the data bag:
+Create entries in a data bag named `djbdns`, and an item named after the domain, with underscores instead of spaces. Example structure of the data bag:
 
 ```json
 {
@@ -132,9 +94,14 @@ Sets up a server to be an internal nameserver. To modify resource records in the
 
 Aliases and hosts should be an array of hashes, each entry containing the fqdn as the key and the IP as the value. In this example 192.168.0.5 is the IP of the nameserver and we're listing it as authoritative for int.example.com and for reverse DNS for 192.168.0.x.
 
-## server
-
-Sets up a server to be a public nameserver. To modify resource records in the environment, modify the tinydns-data.erb template. The recipe does not yet use the data bag per `internal_server` above, but will in a future release.
+```ruby
+djbdns_tinydns 'tinydns-internal' do
+  internal true
+  data_bag 'djbdns'
+  domain 'int.example.com'
+  action :create
+end
+```
 
 ## Contributors
 
