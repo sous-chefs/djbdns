@@ -7,13 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.1.20](https://github.com/sous-chefs/djbdns/compare/v5.1.19...v5.1.20) (2026-04-21)
 
-
 ### Bug Fixes
 
 * **ci:** Update workflows to use release pipeline ([#68](https://github.com/sous-chefs/djbdns/issues/68)) ([76dece1](https://github.com/sous-chefs/djbdns/commit/76dece1864bf325f15114c64628569b7a14a806c))
 
 ## [5.1.19](https://github.com/sous-chefs/djbdns/compare/5.1.18...v5.1.19) (2025-10-15)
-
 
 ### Bug Fixes
 
