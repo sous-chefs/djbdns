@@ -44,11 +44,11 @@ This cookbook now exposes custom resources instead of root recipes and node attr
 
 ## Resources
 
-* [djbdns_install](documentation/djbdns_install.md)
-* [djbdns_tinydns](documentation/djbdns_tinydns.md)
-* [djbdns_dnscache](documentation/djbdns_dnscache.md)
-* [djbdns_axfrdns](documentation/djbdns_axfrdns.md)
-* [djbdns_rr](documentation/djbdns_rr.md)
+- [djbdns_install](documentation/djbdns_install.md)
+- [djbdns_tinydns](documentation/djbdns_tinydns.md)
+- [djbdns_dnscache](documentation/djbdns_dnscache.md)
+- [djbdns_axfrdns](documentation/djbdns_axfrdns.md)
+- [djbdns_rr](documentation/djbdns_rr.md)
 
 ## Examples
 

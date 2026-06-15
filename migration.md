@@ -6,13 +6,13 @@ This release removes the legacy root `recipes/` and `attributes/` public API. Us
 
 ## Recipe Mapping
 
-| Legacy recipe        | Replacement resource       |
-|----------------------|----------------------------|
-| `djbdns::default`    | `djbdns_install`           |
-| `djbdns::server`     | `djbdns_tinydns`           |
-| `djbdns::internal_server` | `djbdns_tinydns` with `internal true` |
-| `djbdns::cache`      | `djbdns_dnscache`          |
-| `djbdns::axfr`       | `djbdns_axfrdns`           |
+| Legacy recipe              | Replacement resource                  |
+|----------------------------|---------------------------------------|
+| `djbdns::default`          | `djbdns_install`                      |
+| `djbdns::server`           | `djbdns_tinydns`                      |
+| `djbdns::internal_server`  | `djbdns_tinydns` with `internal true` |
+| `djbdns::cache`            | `djbdns_dnscache`                     |
+| `djbdns::axfr`             | `djbdns_axfrdns`                      |
 
 ## Attribute Mapping
 
