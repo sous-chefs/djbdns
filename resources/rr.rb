@@ -20,6 +20,8 @@
 # calls tinydns-edit: usage: tinydns-edit data data.new add [ns|childns|host|alias|mx] domain a.b.c.d
 # e.g., tinydns-edit data data.new add host tester2.int.housepub.org 10.13.37.79
 
+unified_mode true
+
 property :fqdn, String, name_property: true
 property :ip, String, required: true
 property :type, String, default: 'host'
