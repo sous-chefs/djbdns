@@ -23,7 +23,7 @@ include_recipe 'djbdns::default'
 
 execute 'public_cache_update' do
   cwd node['djbdns']['public_dnscache_dir']
-  command "#{node['djbdns']['bin_dir']}/dnsip `#{node['djbdns']['bin_dir']}/dnsqr ns . | awk '/answer:/ { print \$5 ; }' | sort` > root/servers/@"
+  command "#{node['djbdns']['bin_dir']}/dnsip `#{node['djbdns']['bin_dir']}/dnsqr ns . | awk '/answer:/ { print $5 ; }' | sort` > root/servers/@"
   action :nothing
 end
 
