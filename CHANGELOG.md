@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [6.0.0](https://github.com/sous-chefs/djbdns/compare/v5.1.21...v6.0.0) (2026-11-26)
 
-
 ### ⚠ BREAKING CHANGES
 
 * Use the cookbook custom resources in place of the former recipes and node attributes. See migration.md for upgrade steps.
