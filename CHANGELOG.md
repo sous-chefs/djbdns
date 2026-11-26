@@ -5,6 +5,17 @@ This file is used to list changes made in each version of the djbdns cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/sous-chefs/djbdns/compare/v5.1.21...v6.0.0) (2026-11-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use the cookbook custom resources in place of the former recipes and node attributes. See migration.md for upgrade steps.
+
+### Features
+
+* migrate djbdns to custom resources ([046f7db](https://github.com/sous-chefs/djbdns/commit/046f7db96beff8fc2deec6dd8769bade11be108f))
+
 ## [5.1.21](https://github.com/sous-chefs/djbdns/compare/v5.1.20...v5.1.21) (2026-07-09)
 
 ### Bug Fixes
