@@ -1,4 +1,5 @@
 #!/bin/sh
 exec 2>&1
+# Leave room for tcpserver's libc allocations while retaining a data limit.
 exec chpst -e ./env sh -c '
-  exec chpst -U axfrdns -d300000 tcpserver -vDRHl0 -x tcp.cdb -- "$IP" 53 "${BIN_DIR:-/usr/local/bin}"/axfrdns'
+  exec chpst -U axfrdns -d4194304 tcpserver -vDRHl0 -x tcp.cdb -- "$IP" 53 "${BIN_DIR:-/usr/local/bin}"/axfrdns'

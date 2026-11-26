@@ -52,7 +52,7 @@ action :create do
     end
 
     file ::File.join(source_dir, 'conf-cc') do
-      content "gcc -O2 -include errno.h\n"
+      content "gcc -O2 -std=gnu89 -include errno.h\n"
       only_if { ::File.directory?(source_dir) }
     end
 

@@ -117,7 +117,7 @@ action :install do
       build_essential 'install compilation tools'
 
       file ::File.join(source_dir, 'conf-cc') do
-        content "gcc -O2 -include /usr/include/errno.h\n"
+        content "gcc -O2 -std=gnu89 -include /usr/include/errno.h\n"
         owner 'root'
         group 'root'
         mode '0644'
