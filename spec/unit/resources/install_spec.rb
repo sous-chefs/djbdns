@@ -16,25 +16,39 @@ describe 'djbdns_install' do
     before do
       allow(File).to receive(:exist?).and_call_original
       allow(File).to receive(:exist?).with('/usr/local/bin/tinydns').and_return(false)
-      allow(File).to receive(:exist?).with('/usr/lib/systemd/system/runit.service').and_return(true)
-      allow(File).to receive(:exist?).with('/usr/bin/runsvchdir').and_return(true)
-      allow(File).to receive(:directory?).and_call_original
-      allow(File).to receive(:directory?).with('/etc/runit/runsvdir/default').and_return(true)
-      stub_command('test "$(readlink /etc/runit/runsvdir/current 2>/dev/null)" = default').and_return(false)
     end
 
     it { is_expected.to install_package('runit') }
     it { is_expected.to enable_service('runit') }
     it { is_expected.to start_service('runit') }
-    it { is_expected.to run_execute('runsvchdir default') }
     it { is_expected.to install_build_essential('install compilation tools') }
     it { is_expected.to create_remote_file("#{Chef::Config[:file_cache_path]}/djbdns-1.05.tar.gz") }
     it { is_expected.to extract_archive_file("#{Chef::Config[:file_cache_path]}/djbdns-1.05.tar.gz") }
+    it { is_expected.to create_file_if_missing('/etc/dnsroots.global') }
     it { is_expected.to run_execute('install_djbdns') }
     it { is_expected.to create_user('dnscache').with(uid: 9997, system: true) }
     it { is_expected.to create_user('dnslog').with(uid: 9998, system: true) }
     it { is_expected.to create_user('tinydns').with(uid: 9999, system: true) }
     it { is_expected.to create_directory('/etc/djbdns') }
+  end
+
+  context 'without a packaged runit supervisor on AlmaLinux' do
+    platform 'almalinux', '9'
+
+    recipe { djbdns_install 'default' }
+
+    it { is_expected.to run_execute('build and install runit supervision tools') }
+    it { is_expected.to start_systemd_unit('djbdns-runit.service') }
+
+    context 'when a package already provides the supervisor' do
+      before do
+        allow(File).to receive(:file?).and_call_original
+        allow(File).to receive(:file?).with('/usr/lib/systemd/system/runsvdir-start.service').and_return(true)
+      end
+
+      it { is_expected.to start_service('runsvdir-start') }
+      it { is_expected.not_to create_systemd_unit('djbdns-runit.service') }
+    end
   end
 
   context 'with package install' do

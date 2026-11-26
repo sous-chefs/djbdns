@@ -3,7 +3,7 @@ control 'public-dnscache' do
     its('protocols') { should include 'udp' }
   end
 
-  describe command('/usr/bin/sv status public-dnscache') do
+  describe command('sv status public-dnscache') do
     its(:stdout) { should match(/^run:/) }
   end
 

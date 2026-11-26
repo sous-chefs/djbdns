@@ -12,7 +12,7 @@ This cookbook supports source installation on current Debian and Ubuntu releases
 
 ### DNF/YUM (RHEL family, Fedora, Amazon Linux)
 
-No official vendor DNF/YUM repository exists. The supported path is source installation with platform build tools.
+No official vendor DNF/YUM repository exists for djbdns. Installation uses the platform's build tools. The cookbook uses an existing runit systemd service when available. Otherwise it compiles the required runit tools and starts a separate supervisor. The AXFR resource also builds the TCP helper tools on these distributions.
 
 ### Zypper (SUSE)
 

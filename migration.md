@@ -14,6 +14,8 @@ This release removes the legacy root `recipes/` and `attributes/` public API. Us
 | `djbdns::cache`            | `djbdns_dnscache`                     |
 | `djbdns::axfr`             | `djbdns_axfrdns`                      |
 
+For existing internal zone data, also set `data_bag 'djbdns'` on `djbdns_tinydns`.
+
 ## Attribute Mapping
 
 Node attributes under `node['djbdns']` are now resource properties. For example, replace:

@@ -23,6 +23,8 @@ Installs djbdns from source or from a distribution package and creates the share
 | `dnslog_uid`      | Integer     | `9998`        | UID for the `dnslog` user       |
 | `tinydns_uid`     | Integer     | `9999`        | UID for the `tinydns` user      |
 
+For source installs, set `bin_dir` to an absolute path ending in `/bin`. Djbdns uses the parent directory as its installation prefix.
+
 ## Examples
 
 ```ruby

@@ -33,7 +33,7 @@ action_class do
 end
 
 action :create do
-  ensure_runit_defaults
+  node.default['runit'] = {} unless node['runit']
 
   djbdns_install 'default' do
     install_method new_resource.install_method
@@ -100,23 +100,26 @@ action :create do
 
   runit_service new_resource.service_name do
     cookbook 'djbdns'
+    sv_bin runit_sv_binary
+    sv_dir new_resource.sv_dir
+    service_dir runit_service_directory
+    run_template_name(new_resource.internal ? 'tinydns-internal' : 'tinydns')
+    log_template_name(new_resource.internal ? 'tinydns-internal' : 'tinydns')
     env service_env(new_resource.directory, new_resource.ipaddress, resolved_bin_dir)
-    action :enable
-    not_if { runit_service_enabled?(new_resource.service_name) }
-  end
-
-  execute "start #{new_resource.service_name}" do
-    command "/usr/bin/sv start #{new_resource.service_name}"
-    not_if "/usr/bin/sv status #{new_resource.service_name} | grep '^run:'"
+    action [runit_service_enabled?(new_resource.service_name) ? :create : :enable, :start]
   end
 end
 
 action :delete do
-  ensure_runit_defaults
+  node.default['runit'] = {} unless node['runit']
 
   runit_service new_resource.service_name do
     cookbook 'djbdns'
+    sv_bin runit_sv_binary
+    sv_dir new_resource.sv_dir
+    service_dir runit_service_directory
     action [:stop, :disable]
+    only_if { runit_service_enabled?(new_resource.service_name) && ::File.executable?(runit_sv_binary) }
   end
 
   link "#{new_resource.sv_dir}/#{new_resource.service_name}" do

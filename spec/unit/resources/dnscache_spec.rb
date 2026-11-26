@@ -20,7 +20,6 @@ describe 'djbdns_dnscache' do
     allow(File).to receive(:directory?).with('/etc/djbdns/public-dnscache').and_return(false)
     allow(File).to receive(:exist?).and_call_original
     allow(File).to receive(:exist?).with('/usr/local/bin/tinydns').and_return(true)
-    stub_command("/usr/bin/sv status public-dnscache | grep '^run:'").and_return(false)
   end
 
   it { is_expected.to install_djbdns_install('default') }
@@ -28,5 +27,4 @@ describe 'djbdns_dnscache' do
   it { is_expected.to create_file('/etc/djbdns/public-dnscache/root/ip/127') }
   it { is_expected.to create_template('/etc/djbdns/public-dnscache/root/servers/example.test') }
   it { is_expected.to create_template('/etc/djbdns/public-dnscache/root/servers/0.in-addr.arpa') }
-  it { is_expected.to run_execute('start public-dnscache') }
 end

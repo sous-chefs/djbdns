@@ -46,16 +46,20 @@ describe Djbdns::Helpers do
   end
 
   it 'treats /etc/service links as enabled runit services' do
-    allow(File).to receive(:exist?).and_call_original
-    allow(File).to receive(:exist?).with('/etc/service/tinydns').and_return(true)
+    allow(File).to receive(:directory?).and_call_original
+    allow(File).to receive(:directory?).with('/etc/service').and_return(true)
+    allow(File).to receive(:file?).and_call_original
+    allow(File).to receive(:file?).with('/etc/service/tinydns/run').and_return(true)
 
     expect(helper.runit_service_enabled?('tinydns')).to be true
   end
 
   it 'treats runsvdir links as enabled runit services' do
-    allow(File).to receive(:exist?).and_call_original
-    allow(File).to receive(:exist?).with('/etc/service/tinydns').and_return(false)
-    allow(File).to receive(:exist?).with('/etc/runit/runsvdir/default/tinydns').and_return(true)
+    allow(File).to receive(:directory?).and_call_original
+    allow(File).to receive(:directory?).with('/etc/service').and_return(false)
+    allow(File).to receive(:directory?).with('/etc/runit/runsvdir/default').and_return(true)
+    allow(File).to receive(:file?).and_call_original
+    allow(File).to receive(:file?).with('/etc/runit/runsvdir/default/tinydns/run').and_return(true)
 
     expect(helper.runit_service_enabled?('tinydns')).to be true
   end

@@ -15,10 +15,11 @@ module Djbdns
     ).freeze unless const_defined?(:REVERSE_DOMAINS)
 
     DJBDNS_BINARIES = %w(
-      add-alias add-childns add-host add-mx add-ns axfr-get axfrdns
-      axfrdns-conf dnscache dnscache-conf dnsfilter dnsip dnsipq dnsname
-      dnsq dnsqr dnstrace rbldns rbldns-conf tinydns tinydns-conf
-      tinydns-data tinydns-edit walldns walldns-conf
+      axfr-get axfrdns axfrdns-conf dnscache dnscache-conf dnsfilter dnsip
+      dnsipq dnsmx dnsname dnsq dnsqr dnstrace dnstracesort dnstxt pickdns
+      pickdns-conf pickdns-data random-ip rbldns rbldns-conf rbldns-data
+      tinydns tinydns-conf tinydns-data tinydns-edit tinydns-get
+      walldns walldns-conf
     ).freeze unless const_defined?(:DJBDNS_BINARIES)
 
     def default_install_method
@@ -49,21 +50,28 @@ module Djbdns
       }.tap { |env| env['BIN_DIR'] = bin_dir if bin_dir }
     end
 
-    def ensure_runit_defaults
-      node.default['runit']['sv_dir'] = '/etc/sv'
-      node.default['runit']['service_dir'] = '/etc/service'
-    end
+    def runit_service_directory
+      configured = node.dig('runit', 'service_dir')
+      return configured if configured
 
-    def runit_service_link(service_name)
-      if ::File.directory?('/etc/runit/runsvdir/default')
-        "/etc/runit/runsvdir/default/#{service_name}"
+      if !::File.directory?('/etc/service') && ::File.directory?('/etc/runit/runsvdir/default')
+        '/etc/runit/runsvdir/default'
       else
-        "/etc/service/#{service_name}"
+        '/etc/service'
       end
     end
 
+    def runit_sv_binary
+      configured = node.dig('runit', 'sv_bin')
+      return configured if configured
+
+      return '/usr/local/bin/sv' if ::File.executable?('/usr/local/bin/sv')
+
+      platform_family?('debian') ? '/usr/bin/sv' : '/sbin/sv'
+    end
+
     def runit_service_enabled?(service_name)
-      ::File.exist?("/etc/service/#{service_name}") || ::File.exist?("/etc/runit/runsvdir/default/#{service_name}")
+      ::File.file?(::File.join(runit_service_directory, service_name, 'run'))
     end
   end
 end

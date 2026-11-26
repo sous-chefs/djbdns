@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require 'ipaddr'
+
 provides :djbdns_rr
-unified_mode true
 
 # calls tinydns-edit: usage: tinydns-edit data data.new add [ns|childns|host|alias|mx] domain a.b.c.d
 # e.g., tinydns-edit data data.new add host tester2.int.housepub.org 10.13.37.79
+
+unified_mode true
 
 property :fqdn, String, name_property: true
 property :ip, String, required: true
@@ -13,7 +16,15 @@ property :cwd, String, default: '/etc/djbdns/tinydns-internal/root'
 
 action_class do
   def record_regex
-    /^[.+=@&C]#{Regexp.escape(new_resource.fqdn)}:#{Regexp.escape(new_resource.ip)}/
+    markers = { 'ns' => '.', 'childns' => '&', 'host' => '=', 'alias' => '+', 'mx' => '@', 'host6' => '6', 'alias6' => '3' }
+    marker = markers.fetch(new_resource.type)
+    address = if %w(host6 alias6).include?(new_resource.type)
+                IPAddr.new(new_resource.ip).hton.unpack1('H*')
+              else
+                new_resource.ip
+              end
+
+    /^#{Regexp.escape(marker + new_resource.fqdn)}:#{Regexp.escape(address)}(?=:|$)/i
   end
 
   def record_present?
@@ -31,12 +42,8 @@ action :add do
 end
 
 action :remove do
-  ruby_block "remove #{new_resource.type} record #{new_resource.fqdn}" do
-    block do
-      data_file = "#{new_resource.cwd}/data"
-      lines = ::File.readlines(data_file)
-      ::File.write(data_file, lines.reject { |line| line.match?(record_regex) }.join)
-    end
+  file "#{new_resource.cwd}/data" do
+    content lazy { ::File.readlines(path).reject { |line| line.match?(record_regex) }.join }
     only_if { record_present? }
   end
 end
