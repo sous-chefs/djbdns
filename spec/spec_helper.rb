@@ -1,5 +1,6 @@
 require 'chefspec'
 require 'chefspec/policyfile'
+require_relative '../libraries/helpers'
 
 RSpec.configure do |config|
   config.color = true               # Use color in STDOUT

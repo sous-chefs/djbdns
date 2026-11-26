@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.1.21](https://github.com/sous-chefs/djbdns/compare/v5.1.20...v5.1.21) (2026-07-09)
 
-
 ### Bug Fixes
 
 * migrate to Policyfile ([#83](https://github.com/sous-chefs/djbdns/issues/83)) ([436a227](https://github.com/sous-chefs/djbdns/commit/436a227f28608cdb632b9db7ef6d155bd5f0316d))
